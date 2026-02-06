@@ -28,9 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
     var dashWeight = document.getElementById('dash-weight');
     var dashCountry = document.getElementById('dash-country');
     var dashMedals = document.getElementById('dash-medals');
+    var dashHiddenContainer = document.getElementById('dash-hidden-container');
+    var dashHidden = document.getElementById('dash-hidden');
+    var viewHiddenBtn = document.getElementById('view-hidden-btn');
 
     // Filter Elements
     var filterField = document.getElementById('filter-field');
+    
+    var hiddenIndices = [];
     var filterOperator = document.getElementById('filter-operator');
     var filterValueContainer = document.getElementById('filter-value-container');
     var addFilterBtn = document.getElementById('add-filter-btn');
@@ -56,6 +61,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     filterField.addEventListener('change', updateFilterUI);
     addFilterBtn.addEventListener('click', addFilter);
+    
+    viewHiddenBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showHiddenAthletes();
+    });
 
     document.getElementById('compareBtn').addEventListener('click', function() {
         var h = document.getElementById('height').value;
@@ -430,6 +440,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function applyFilters() {
         currentFilteredIndices = [];
+        hiddenIndices = [];
+        
         olympianArray.forEach((athlete, index) => {
             var pass = true;
             for (var f of activeFilters) {
@@ -440,11 +452,23 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             if (pass) {
                 currentFilteredIndices.push(index);
+                // Check if hidden (missing H or W)
+                if (athlete[0] === null || athlete[1] === null) {
+                    hiddenIndices.push(index);
+                }
             }
         });
 
         renderGraph(currentFilteredIndices);
         updateDashboard(currentFilteredIndices);
+        
+        // Update hidden count UI
+        if (hiddenIndices.length > 0) {
+            dashHiddenContainer.style.display = 'inline-block';
+            dashHidden.innerText = hiddenIndices.length;
+        } else {
+            dashHiddenContainer.style.display = 'none';
+        }
         
         listPanel.innerHTML = '';
         document.getElementById('olympian_detail').style.display = 'none';
@@ -742,21 +766,15 @@ document.addEventListener('DOMContentLoaded', function() {
         statusText.innerHTML = "No se encontraron atletas visibles cercanos a " + h + "cm, " + w + "kg.";
     }
 
-    function showOlympians(hwClass) {
-        var parts = hwClass.substring(2).split('_');
-        var h = parseInt(parts[0]);
-        var w = parseInt(parts[1]);
-        
-        var matches = [];
-        currentFilteredIndices.forEach(function(index) {
-            var athlete = olympianArray[index];
-            if (athlete[0] == h && athlete[1] == w) {
-                matches.push(index);
-            }
-        });
+    function showHiddenAthletes() {
+        renderList(hiddenIndices, "Atletas con datos incompletos (sin estatura o peso):");
+    }
 
+    function renderList(indices, title) {
         var html = '';
-        matches.forEach(function(index) {
+        if (title) html += '<h3>' + title + '</h3>';
+        
+        indices.forEach(function(index) {
             var o = olympianArray[index];
             var name = o[3][0] + ' ' + o[3][1];
             var countryIdx = o[7];
@@ -770,6 +788,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         listPanel.innerHTML = html;
+    }
+
+    function showOlympians(hwClass) {
+        var parts = hwClass.substring(2).split('_');
+        var h = parseInt(parts[0]);
+        var w = parseInt(parts[1]);
+        
+        var matches = [];
+        currentFilteredIndices.forEach(function(index) {
+            var athlete = olympianArray[index];
+            if (athlete[0] == h && athlete[1] == w) {
+                matches.push(index);
+            }
+        });
+
+        renderList(matches);
         if (matches.length > 0) showDetail(matches[0]);
     }
 

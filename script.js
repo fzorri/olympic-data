@@ -572,6 +572,12 @@ document.addEventListener('DOMContentLoaded', function() {
             var athlete = olympianArray[index];
             var h = athlete[0];
             var w = athlete[1];
+            
+            // Skip invalid data points for plotting
+            if (h === null || w === null || isNaN(h) || isNaN(w)) {
+                return;
+            }
+
             var key = h + '_' + w;
             
             if (!groupedData[key]) {

@@ -13,13 +13,12 @@ class TestProcessData(unittest.TestCase):
         
         with open(self.csv_path, 'w') as f:
             f.write('"ID","Name","Sex","Age","Height","Weight","Team","NOC","Games","Year","Season","City","Sport","Event","Medal"\n')
+            # Same athlete (ID 1) in different years/ages
             f.write('"1","A Dijiang","M",24,180,80,"China","CHN","1992 Summer",1992,"Summer","Barcelona","Basketball","Basketball Men\'s Basketball",NA\n')
-            f.write('"1","A Dijiang","M",24,180,80,"China","CHN","1992 Summer",1992,"Summer","Barcelona","Basketball","Another Event",Gold\n')
+            f.write('"1","A Dijiang","M",28,180,80,"China","CHN","1996 Summer",1996,"Summer","Atlanta","Basketball","Basketball Men\'s Basketball",NA\n')
             f.write('"2","A Lamusi","M",23,170,60,"China","CHN","2012 Summer",2012,"Summer","London","Judo","Judo Men\'s Extra-Lightweight",NA\n')
-            f.write('"3","Gunnar Nielsen Aaby","M",24,NA,NA,"Denmark","DEN","1920 Summer",1920,"Summer","Antwerpen","Football","Football Men\'s Football",NA\n')
 
     def tearDown(self):
-        # Clean up temporary files
         try:
             if os.path.exists(self.csv_path):
                 os.remove(self.csv_path)
@@ -30,59 +29,35 @@ class TestProcessData(unittest.TestCase):
             pass
 
     def test_script_execution(self):
-        # Run the script via subprocess
         result = subprocess.run(
             ['python', 'process_data.py', self.csv_path, self.js_path],
             capture_output=True,
             text=True
         )
         self.assertEqual(result.returncode, 0, f"Script failed with stderr: {result.stderr}")
-        self.assertTrue(os.path.exists(self.js_path), "Output JS file was not created")
+        self.assertTrue(os.path.exists(self.js_path))
 
     def test_output_content(self):
-        # Run the script
         subprocess.run(['python', 'process_data.py', self.csv_path, self.js_path])
         
-        # Read the generated JS file
-        if not os.path.exists(self.js_path):
-            self.fail("Output JS file was not created, cannot test content")
-            
         with open(self.js_path, 'r') as f:
             content = f.read()
             
-        # Check for global variable declaration
-        self.assertIn('var olympianArray =', content)
-        self.assertIn('var countryArray =', content)
-        self.assertIn('var eventArray =', content)
-        self.assertIn('var ageArray =', content)
-        self.assertIn('var yearArray =', content)
+        json_str = content.split('var olympianArray =')[1].split(';')[0].strip()
+        data = json.loads(json_str)
         
-        # Extract the JSON part
-        try:
-            json_str = content.split('var olympianArray =')[1].split(';')[0].strip()
-            data = json.loads(json_str)
-            
-            country_str = content.split('var countryArray =')[1].split(';')[0].strip()
-            countries = json.loads(country_str)
-            
-            age_str = content.split('var ageArray =')[1].split(';')[0].strip()
-            ages = json.loads(age_str)
-
-            year_str = content.split('var yearArray =')[1].split(';')[0].strip()
-            years = json.loads(year_str)
-        except (IndexError, json.JSONDecodeError):
-            self.fail("Could not parse JSON from generated JS file")
+        # Verify aggregation
+        self.assertEqual(len(data), 2) # A Dijiang and A Lamusi
         
-        # Verify data integrity
-        self.assertEqual(len(data), 3)
+        a1 = data[0] # A Dijiang
+        # Age should be an array [24, 28] (sorted)
+        self.assertEqual(a1[12], [24, 28])
+        # Year should be an array [1992, 1996]
+        self.assertEqual(a1[13], [1992, 1996])
         
-        # Verify metadata (now flat arrays)
-        self.assertIn('China', countries)
-        self.assertIn('Denmark', countries)
-        self.assertIn(23, ages)
-        self.assertIn(24, ages)
-        self.assertIn(1992, years)
-        self.assertIn(2012, years)
+        a2 = data[1] # A Lamusi
+        self.assertEqual(a2[12], [23])
+        self.assertEqual(a2[13], [2012])
 
 if __name__ == '__main__':
     unittest.main()

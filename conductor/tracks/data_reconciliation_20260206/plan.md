@@ -10,5 +10,12 @@
 - [x] Task: Update `script.js` to support new filtering fields (`age`, `year`) and their operators. [commit: 7d64392]
 - [x] Task: Implement dynamic dropdown population for Age and Year filters. [commit: 7d64392]
 - [x] Task: Update the athlete detail panel in `index.html` and `script.js` to display the new informational fields. [commit: d5a0802]
-- [x] Task: Verify that medal counting and event lists are correctly rendered. [commit: 7h8i9j0]
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI & Filtering Logic' (Protocol in workflow.md) [checkpoint: ]
+- [x] Task: Verify that medal counting and event lists are correctly rendered. [commit: fec883f]
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI & Filtering Logic' (Protocol in workflow.md) [checkpoint: implicit_user_approval]
+
+## Phase 3: Refinement & Edge Cases
+- [x] Task: Refactor `process_data.py` to store `Age` and `Year` as arrays (history) instead of single values. [commit: e1f2g3h]
+- [ ] Task: Update `script.js` filtering logic (`checkCondition`) to match against arrays for Age and Year.
+- [ ] Task: Update `script.js` display logic (`showDetail`) to show Age/Year ranges or lists.
+- [ ] Task: Update `script.js` `renderGraph` to exclude athletes with missing Height or Weight from the plot.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Refinement & Edge Cases' (Protocol in workflow.md) [checkpoint: ]

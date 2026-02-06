@@ -28,5 +28,5 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Advanced Stats & History' (Protocol in workflow.md) [checkpoint: 2814618]
 
 ## Phase 5: Final Polish
-- [x] Task: Implement "Total Medals" filter option in UI and logic (`gold + silver + bronze`). [commit: 3f8a9b2]
+- [x] Task: Implement "Total Medals" filter option in UI and logic (`gold + silver + bronze`). [commit: 0006c36]
 - [ ] Task: Conductor - User Manual Verification 'Phase 5: Final Polish' (Protocol in workflow.md) [checkpoint: ]

@@ -15,6 +15,8 @@ def parse_value(value):
 
 def process_data(input_file, output_file):
     data = []
+    countries = set()
+    sports = set()
     
     try:
         with open(input_file, mode='r', encoding='utf-8') as csvfile:
@@ -23,13 +25,31 @@ def process_data(input_file, output_file):
                 clean_row = {}
                 for key, value in row.items():
                     clean_row[key] = parse_value(value)
+                
+                # Extract metadata
+                if clean_row.get('Team'):
+                    # Handle "Denmark/Sweden" cases if necessary? 
+                    # For now, just taking the Team as is to be simple, 
+                    # or splitting by '/' could be an option but might introduce noise.
+                    # Looking at sample: "Denmark/Sweden" -> just add it.
+                    countries.add(clean_row['Team'])
+                
+                if clean_row.get('Sport'):
+                    sports.add(clean_row['Sport'])
+                    
                 data.append(clean_row)
     except FileNotFoundError:
         print(f"Error: Input file '{input_file}' not found.")
         sys.exit(1)
 
+    # Format metadata as array of arrays [['Value'], ...]
+    country_array = sorted([[c] for c in countries])
+    event_array = sorted([[s] for s in sports])
+
     # Wrap in JavaScript variable
-    js_content = f"const olympicData = {json.dumps(data, indent=2)};"
+    js_content = f"const olympicData = {json.dumps(data, indent=2)};\n"
+    js_content += f"const countryArray = {json.dumps(country_array, indent=2)};\n"
+    js_content += f"const eventArray = {json.dumps(event_array, indent=2)};\n"
 
     try:
         with open(output_file, 'w', encoding='utf-8') as jsfile:

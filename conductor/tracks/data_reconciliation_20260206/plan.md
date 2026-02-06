@@ -33,5 +33,5 @@
 
 ## Phase 6: UI/UX Refinement
 - [x] Task: Update `styles.css` to expand the main container width and improve responsiveness. [commit: 6ca44ac]
-- [ ] Task: Adjust grid layout to give more space to the athlete detail panel and list.
+- [x] Task: Adjust grid layout to give more space to the athlete detail panel and list. [commit: 6ca44ac]
 - [ ] Task: Conductor - User Manual Verification 'Phase 6: UI/UX Refinement' (Protocol in workflow.md) [checkpoint: ]

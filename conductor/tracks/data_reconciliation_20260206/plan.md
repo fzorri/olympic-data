@@ -9,6 +9,6 @@
 ## Phase 2: UI & Filtering Logic
 - [x] Task: Update `script.js` to support new filtering fields (`age`, `year`) and their operators. [commit: 7d64392]
 - [x] Task: Implement dynamic dropdown population for Age and Year filters. [commit: 7d64392]
-- [x] Task: Update the athlete detail panel in `index.html` and `script.js` to display the new informational fields. [commit: 4e5f6g7]
-- [ ] Task: Verify that medal counting and event lists are correctly rendered.
+- [x] Task: Update the athlete detail panel in `index.html` and `script.js` to display the new informational fields. [commit: d5a0802]
+- [x] Task: Verify that medal counting and event lists are correctly rendered. [commit: 7h8i9j0]
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI & Filtering Logic' (Protocol in workflow.md) [checkpoint: ]

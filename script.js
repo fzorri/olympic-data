@@ -737,6 +737,10 @@ document.addEventListener('DOMContentLoaded', function() {
         detail.querySelector('.sport').innerHTML = '<span>' + term_sport + ':</span> ' + eventArray[o[8]];
         detail.querySelector('.games').innerHTML = '<span>Juegos:</span> ' + o[14] + ' (' + o[15] + ')';
         detail.querySelector('.city').innerHTML = '<span>Ciudad:</span> ' + o[16];
+        detail.querySelector('.medals-summary').innerHTML = '<span>Medallas:</span> ' + 
+            '<span class="gold-count">' + o[4] + ' Oro</span>, ' +
+            '<span class="silver-count">' + o[5] + ' Plata</span>, ' +
+            '<span class="bronze-count">' + o[6] + ' Bronce</span>';
         
         var medalHtml = '';
         o[11].forEach(function(m) {

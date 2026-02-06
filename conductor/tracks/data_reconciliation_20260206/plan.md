@@ -17,5 +17,5 @@
 - [x] Task: Refactor `process_data.py` to store `Age` and `Year` as arrays (history) instead of single values. [commit: 98892c9]
 - [x] Task: Update `script.js` filtering logic (`checkCondition`) to match against arrays for Age and Year. [commit: f516cb1]
 - [x] Task: Update `script.js` display logic (`showDetail`) to show Age/Year ranges or lists. [commit: 16dee49]
-- [x] Task: Update `script.js` `renderGraph` to exclude athletes with missing Height or Weight from the plot. [commit: 7a8b9c0]
+- [x] Task: Update `script.js` `renderGraph` to exclude athletes with missing Height or Weight from the plot. [commit: 90dfd55]
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Refinement & Edge Cases' (Protocol in workflow.md) [checkpoint: ]

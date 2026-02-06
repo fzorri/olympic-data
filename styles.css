@@ -7,8 +7,8 @@ body {
 }
 
 #container {
-    width: 95%;
-    max-width: 980px;
+    width: 98%;
+    max-width: 1600px;
     margin: 0 auto;
     background-color: #fff;
     padding: 20px;
@@ -188,7 +188,7 @@ h1 {
     overflow: hidden; /* Contain SVG */
     /* Aspect ratio fallback or height control needed? 
        We will let SVG control height mostly, or set min-height */
-    height: 500px;
+    height: 600px;
 }
 
 /* Legends */
@@ -306,12 +306,12 @@ circle.selected {
 
 /* Result Panel */
 #olympic_result_panel {
-    width: 230px;
-    min-width: 230px;
+    width: 350px;
+    min-width: 320px;
     background: #f9f9f9;
     border: 1px solid #ddd;
     position: relative;
-    height: 500px;
+    height: 600px;
     overflow-y: auto;
 }
 

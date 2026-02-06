@@ -10,5 +10,5 @@
 ## Phase 2: UI Integration
 - [x] Task: Update `index.html` to include the generated `.js` file via `<script>` tag. [commit: 876775c]
 - [x] Task: Modify `script.js` to initialize the app using the `olympicData` and metadata variables. [commit: 1c41923]
-- [ ] Task: Verify the UI works with the processed sample data without a web server.
+- [x] Task: Verify the UI works with the processed sample data without a web server. [commit: d83ad80]
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Integration' (Protocol in workflow.md) [checkpoint: ]

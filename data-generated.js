@@ -1,72 +1,4 @@
-const olympicDataKeys = [
-  "ID",
-  "Name",
-  "Sex",
-  "Age",
-  "Height",
-  "Weight",
-  "Team",
-  "NOC",
-  "Games",
-  "Year",
-  "Season",
-  "City",
-  "Sport",
-  "Event",
-  "Medal"
-];
-const olympicData = [
-  [1, "A Dijiang", "M", 24, 180, 80, "China", "CHN", "1992 Summer", 1992, "Summer", "Barcelona", "Basketball", "Basketball Men's Basketball", null],
-  [2, "A Lamusi", "M", 23, 170, 60, "China", "CHN", "2012 Summer", 2012, "Summer", "London", "Judo", "Judo Men's Extra-Lightweight", null],
-  [3, "Gunnar Nielsen Aaby", "M", 24, null, null, "Denmark", "DEN", "1920 Summer", 1920, "Summer", "Antwerpen", "Football", "Football Men's Football", null],
-  [4, "Edgar Lindenau Aabye", "M", 34, null, null, "Denmark/Sweden", "DEN", "1900 Summer", 1900, "Summer", "Paris", "Tug-Of-War", "Tug-Of-War Men's Tug-Of-War", "Gold"],
-  [5, "Christine Jacoba Aaftink", "F", 21, 185, 82, "Netherlands", "NED", "1988 Winter", 1988, "Winter", "Calgary", "Speed Skating", "Speed Skating Women's 500 metres", null],
-  [5, "Christine Jacoba Aaftink", "F", 21, 185, 82, "Netherlands", "NED", "1988 Winter", 1988, "Winter", "Calgary", "Speed Skating", "Speed Skating Women's 1,000 metres", null],
-  [5, "Christine Jacoba Aaftink", "F", 25, 185, 82, "Netherlands", "NED", "1992 Winter", 1992, "Winter", "Albertville", "Speed Skating", "Speed Skating Women's 500 metres", null],
-  [5, "Christine Jacoba Aaftink", "F", 25, 185, 82, "Netherlands", "NED", "1992 Winter", 1992, "Winter", "Albertville", "Speed Skating", "Speed Skating Women's 1,000 metres", null],
-  [5, "Christine Jacoba Aaftink", "F", 27, 185, 82, "Netherlands", "NED", "1994 Winter", 1994, "Winter", "Lillehammer", "Speed Skating", "Speed Skating Women's 500 metres", null],
-  [5, "Christine Jacoba Aaftink", "F", 27, 185, 82, "Netherlands", "NED", "1994 Winter", 1994, "Winter", "Lillehammer", "Speed Skating", "Speed Skating Women's 1,000 metres", null],
-  [6, "Per Knut Aaland", "M", 31, 188, 75, "United States", "USA", "1992 Winter", 1992, "Winter", "Albertville", "Cross Country Skiing", "Cross Country Skiing Men's 10 kilometres", null],
-  [6, "Per Knut Aaland", "M", 31, 188, 75, "United States", "USA", "1992 Winter", 1992, "Winter", "Albertville", "Cross Country Skiing", "Cross Country Skiing Men's 50 kilometres", null],
-  [6, "Per Knut Aaland", "M", 31, 188, 75, "United States", "USA", "1992 Winter", 1992, "Winter", "Albertville", "Cross Country Skiing", "Cross Country Skiing Men's 10/15 kilometres Pursuit", null],
-  [6, "Per Knut Aaland", "M", 31, 188, 75, "United States", "USA", "1992 Winter", 1992, "Winter", "Albertville", "Cross Country Skiing", "Cross Country Skiing Men's 4 x 10 kilometres Relay", null],
-  [6, "Per Knut Aaland", "M", 33, 188, 75, "United States", "USA", "1994 Winter", 1994, "Winter", "Lillehammer", "Cross Country Skiing", "Cross Country Skiing Men's 10 kilometres", null],
-  [6, "Per Knut Aaland", "M", 33, 188, 75, "United States", "USA", "1994 Winter", 1994, "Winter", "Lillehammer", "Cross Country Skiing", "Cross Country Skiing Men's 30 kilometres", null],
-  [6, "Per Knut Aaland", "M", 33, 188, 75, "United States", "USA", "1994 Winter", 1994, "Winter", "Lillehammer", "Cross Country Skiing", "Cross Country Skiing Men's 10/15 kilometres Pursuit", null],
-  [6, "Per Knut Aaland", "M", 33, 188, 75, "United States", "USA", "1994 Winter", 1994, "Winter", "Lillehammer", "Cross Country Skiing", "Cross Country Skiing Men's 4 x 10 kilometres Relay", null],
-  [7, "John Aalberg", "M", 31, 183, 72, "United States", "USA", "1992 Winter", 1992, "Winter", "Albertville", "Cross Country Skiing", "Cross Country Skiing Men's 10 kilometres", null],
-  [7, "John Aalberg", "M", 31, 183, 72, "United States", "USA", "1992 Winter", 1992, "Winter", "Albertville", "Cross Country Skiing", "Cross Country Skiing Men's 50 kilometres", null],
-  [7, "John Aalberg", "M", 31, 183, 72, "United States", "USA", "1992 Winter", 1992, "Winter", "Albertville", "Cross Country Skiing", "Cross Country Skiing Men's 10/15 kilometres Pursuit", null],
-  [7, "John Aalberg", "M", 31, 183, 72, "United States", "USA", "1992 Winter", 1992, "Winter", "Albertville", "Cross Country Skiing", "Cross Country Skiing Men's 4 x 10 kilometres Relay", null],
-  [7, "John Aalberg", "M", 33, 183, 72, "United States", "USA", "1994 Winter", 1994, "Winter", "Lillehammer", "Cross Country Skiing", "Cross Country Skiing Men's 10 kilometres", null],
-  [7, "John Aalberg", "M", 33, 183, 72, "United States", "USA", "1994 Winter", 1994, "Winter", "Lillehammer", "Cross Country Skiing", "Cross Country Skiing Men's 30 kilometres", null],
-  [7, "John Aalberg", "M", 33, 183, 72, "United States", "USA", "1994 Winter", 1994, "Winter", "Lillehammer", "Cross Country Skiing", "Cross Country Skiing Men's 10/15 kilometres Pursuit", null],
-  [7, "John Aalberg", "M", 33, 183, 72, "United States", "USA", "1994 Winter", 1994, "Winter", "Lillehammer", "Cross Country Skiing", "Cross Country Skiing Men's 4 x 10 kilometres Relay", null],
-  [8, "Cornelia \"Cor\" Aalten (-Strannood)", "F", 18, 168, null, "Netherlands", "NED", "1932 Summer", 1932, "Summer", "Los Angeles", "Athletics", "Athletics Women's 100 metres", null],
-  [8, "Cornelia \"Cor\" Aalten (-Strannood)", "F", 18, 168, null, "Netherlands", "NED", "1932 Summer", 1932, "Summer", "Los Angeles", "Athletics", "Athletics Women's 4 x 100 metres Relay", null],
-  [9, "Antti Sami Aalto", "M", 26, 186, 96, "Finland", "FIN", "2002 Winter", 2002, "Winter", "Salt Lake City", "Ice Hockey", "Ice Hockey Men's Ice Hockey", null],
-  [10, "Einar Ferdinand \"Einari\" Aalto", "M", 26, null, null, "Finland", "FIN", "1952 Summer", 1952, "Summer", "Helsinki", "Swimming", "Swimming Men's 400 metres Freestyle", null],
-  [11, "Jorma Ilmari Aalto", "M", 22, 182, 76.5, "Finland", "FIN", "1980 Winter", 1980, "Winter", "Lake Placid", "Cross Country Skiing", "Cross Country Skiing Men's 30 kilometres", null],
-  [12, "Jyri Tapani Aalto", "M", 31, 172, 70, "Finland", "FIN", "2000 Summer", 2000, "Summer", "Sydney", "Badminton", "Badminton Men's Singles", null],
-  [13, "Minna Maarit Aalto", "F", 30, 159, 55.5, "Finland", "FIN", "1996 Summer", 1996, "Summer", "Atlanta", "Sailing", "Sailing Women's Windsurfer", null],
-  [13, "Minna Maarit Aalto", "F", 34, 159, 55.5, "Finland", "FIN", "2000 Summer", 2000, "Summer", "Sydney", "Sailing", "Sailing Women's Windsurfer", null],
-  [14, "Pirjo Hannele Aalto (Mattila-)", "F", 32, 171, 65, "Finland", "FIN", "1994 Winter", 1994, "Winter", "Lillehammer", "Biathlon", "Biathlon Women's 7.5 kilometres Sprint", null],
-  [15, "Arvo Ossian Aaltonen", "M", 22, null, null, "Finland", "FIN", "1912 Summer", 1912, "Summer", "Stockholm", "Swimming", "Swimming Men's 200 metres Breaststroke", null],
-  [15, "Arvo Ossian Aaltonen", "M", 22, null, null, "Finland", "FIN", "1912 Summer", 1912, "Summer", "Stockholm", "Swimming", "Swimming Men's 400 metres Breaststroke", null],
-  [15, "Arvo Ossian Aaltonen", "M", 30, null, null, "Finland", "FIN", "1920 Summer", 1920, "Summer", "Antwerpen", "Swimming", "Swimming Men's 200 metres Breaststroke", "Bronze"],
-  [15, "Arvo Ossian Aaltonen", "M", 30, null, null, "Finland", "FIN", "1920 Summer", 1920, "Summer", "Antwerpen", "Swimming", "Swimming Men's 400 metres Breaststroke", "Bronze"],
-  [15, "Arvo Ossian Aaltonen", "M", 34, null, null, "Finland", "FIN", "1924 Summer", 1924, "Summer", "Paris", "Swimming", "Swimming Men's 200 metres Breaststroke", null],
-  [16, "Juhamatti Tapio Aaltonen", "M", 28, 184, 85, "Finland", "FIN", "2014 Winter", 2014, "Winter", "Sochi", "Ice Hockey", "Ice Hockey Men's Ice Hockey", "Bronze"],
-  [17, "Paavo Johannes Aaltonen", "M", 28, 175, 64, "Finland", "FIN", "1948 Summer", 1948, "Summer", "London", "Gymnastics", "Gymnastics Men's Individual All-Around", "Bronze"],
-  [17, "Paavo Johannes Aaltonen", "M", 28, 175, 64, "Finland", "FIN", "1948 Summer", 1948, "Summer", "London", "Gymnastics", "Gymnastics Men's Team All-Around", "Gold"],
-  [17, "Paavo Johannes Aaltonen", "M", 28, 175, 64, "Finland", "FIN", "1948 Summer", 1948, "Summer", "London", "Gymnastics", "Gymnastics Men's Floor Exercise", null],
-  [17, "Paavo Johannes Aaltonen", "M", 28, 175, 64, "Finland", "FIN", "1948 Summer", 1948, "Summer", "London", "Gymnastics", "Gymnastics Men's Horse Vault", "Gold"],
-  [17, "Paavo Johannes Aaltonen", "M", 28, 175, 64, "Finland", "FIN", "1948 Summer", 1948, "Summer", "London", "Gymnastics", "Gymnastics Men's Parallel Bars", null],
-  [17, "Paavo Johannes Aaltonen", "M", 28, 175, 64, "Finland", "FIN", "1948 Summer", 1948, "Summer", "London", "Gymnastics", "Gymnastics Men's Horizontal Bar", null],
-  [17, "Paavo Johannes Aaltonen", "M", 28, 175, 64, "Finland", "FIN", "1948 Summer", 1948, "Summer", "London", "Gymnastics", "Gymnastics Men's Rings", null],
-  [17, "Paavo Johannes Aaltonen", "M", 28, 175, 64, "Finland", "FIN", "1948 Summer", 1948, "Summer", "London", "Gymnastics", "Gymnastics Men's Pommelled Horse", "Gold"]
-];
-const countryArray = [
+var countryArray = [
   [
     "China"
   ],
@@ -86,7 +18,7 @@ const countryArray = [
     "United States"
   ]
 ];
-const eventArray = [
+var eventArray = [
   [
     "Athletics"
   ],
@@ -126,4 +58,23 @@ const eventArray = [
   [
     "Tug-Of-War"
   ]
+];
+var olympianArray = [
+  [180, 80, "a_dijiang", ["A", "Dijiang"], 0, 0, 0, 0, 2, "CHN", "M", []],
+  [170, 60, "a_lamusi", ["A", "Lamusi"], 0, 0, 0, 0, 8, "CHN", "M", []],
+  [null, null, "gunnar_nielsen_aaby", ["Gunnar", "Nielsen Aaby"], 0, 0, 0, 1, 5, "DEN", "M", []],
+  [null, null, "edgar_lindenau_aabye", ["Edgar", "Lindenau Aabye"], 1, 0, 0, 2, 12, "DEN", "M", [["Tug-Of-War Men's Tug-Of-War", "gold"]]],
+  [185, 82, "christine_jacoba_aaftink", ["Christine", "Jacoba Aaftink"], 0, 0, 0, 4, 10, "NED", "F", []],
+  [188, 75, "per_knut_aaland", ["Per", "Knut Aaland"], 0, 0, 0, 5, 4, "USA", "M", []],
+  [183, 72, "john_aalberg", ["John", "Aalberg"], 0, 0, 0, 5, 4, "USA", "M", []],
+  [168, null, "cornelia_cor_aalten_strannood", ["Cornelia", "\"Cor\" Aalten (-Strannood)"], 0, 0, 0, 4, 0, "NED", "F", []],
+  [186, 96, "antti_sami_aalto", ["Antti", "Sami Aalto"], 0, 0, 0, 3, 7, "FIN", "M", []],
+  [null, null, "einar_ferdinand_einari_aalto", ["Einar", "Ferdinand \"Einari\" Aalto"], 0, 0, 0, 3, 11, "FIN", "M", []],
+  [182, 76.5, "jorma_ilmari_aalto", ["Jorma", "Ilmari Aalto"], 0, 0, 0, 3, 4, "FIN", "M", []],
+  [172, 70, "jyri_tapani_aalto", ["Jyri", "Tapani Aalto"], 0, 0, 0, 3, 1, "FIN", "M", []],
+  [159, 55.5, "minna_maarit_aalto", ["Minna", "Maarit Aalto"], 0, 0, 0, 3, 9, "FIN", "F", []],
+  [171, 65, "pirjo_hannele_aalto_mattila", ["Pirjo", "Hannele Aalto (Mattila-)"], 0, 0, 0, 3, 3, "FIN", "F", []],
+  [null, null, "arvo_ossian_aaltonen", ["Arvo", "Ossian Aaltonen"], 0, 0, 2, 3, 11, "FIN", "M", [["Swimming Men's 200 metres Breaststroke", "bronze"], ["Swimming Men's 400 metres Breaststroke", "bronze"]]],
+  [184, 85, "juhamatti_tapio_aaltonen", ["Juhamatti", "Tapio Aaltonen"], 0, 0, 1, 3, 7, "FIN", "M", [["Ice Hockey Men's Ice Hockey", "bronze"]]],
+  [175, 64, "paavo_johannes_aaltonen", ["Paavo", "Johannes Aaltonen"], 3, 0, 1, 3, 6, "FIN", "M", [["Gymnastics Men's Individual All-Around", "bronze"], ["Gymnastics Men's Team All-Around", "gold"], ["Gymnastics Men's Horse Vault", "gold"], ["Gymnastics Men's Pommelled Horse", "gold"]]]
 ];

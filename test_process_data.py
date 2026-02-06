@@ -50,51 +50,41 @@ class TestProcessData(unittest.TestCase):
             content = f.read()
             
         # Check for global variable declaration
-        self.assertIn('const olympicData =', content)
-        self.assertIn('const olympicDataKeys =', content)
-        self.assertIn('const countryArray =', content)
-        self.assertIn('const eventArray =', content)
+        self.assertIn('var olympianArray =', content)
+        self.assertIn('var countryArray =', content)
+        self.assertIn('var eventArray =', content)
         
-        # Extract the JSON part (crude parsing for testing)
+        # Extract the JSON part
         try:
-            keys_str = content.split('const olympicDataKeys =')[1].split(';')[0].strip()
-            keys = json.loads(keys_str)
-
-            json_str = content.split('const olympicData =')[1].split(';')[0].strip()
-            data_rows = json.loads(json_str)
+            json_str = content.split('var olympianArray =')[1].split(';')[0].strip()
+            data = json.loads(json_str)
             
-            # Reconstruct objects for validation
-            data = [dict(zip(keys, row)) for row in data_rows]
-
-            country_str = content.split('const countryArray =')[1].split(';')[0].strip()
+            country_str = content.split('var countryArray =')[1].split(';')[0].strip()
             countries = json.loads(country_str)
             
-            event_str = content.split('const eventArray =')[1].split(';')[0].strip()
+            event_str = content.split('var eventArray =')[1].split(';')[0].strip()
             events = json.loads(event_str)
         except (IndexError, json.JSONDecodeError):
             self.fail("Could not parse JSON from generated JS file")
         
         # Verify data integrity
         self.assertEqual(len(data), 3)
-        self.assertEqual(data[0]['Name'], 'A Dijiang')
         
-        # Verify Metadata
-        # Countries: China, Denmark
-        # events: Basketball, Judo, Football
+        # [Height, Weight, Slug, [NameParts], Gold, Silver, Bronze, CountryIdx, SportIdx, NOC, Gender, [[Event, Medal], ...]]
+        a = data[0]
+        self.assertEqual(a[0], 180) # Height
+        self.assertEqual(a[1], 80)  # Weight
+        self.assertEqual(a[3], ["A", "Dijiang"]) # Name parts
+        self.assertEqual(a[9], "CHN") # NOC
+        self.assertEqual(a[10], "M") # Gender
         
-        # Check structure [['China'], ['Denmark']]
+        # Check metadata
         self.assertTrue(any(['China'] == c for c in countries))
         self.assertTrue(any(['Denmark'] == c for c in countries))
         
-        self.assertTrue(any(['Basketball'] == e for e in events))
-        self.assertTrue(any(['Judo'] == e for e in events))
-
-        self.assertEqual(data[0]['Height'], 180)
-        self.assertEqual(data[0]['Weight'], 80)
-        
-        # Verify NA handling (should be null or None in JSON)
-        self.assertIsNone(data[2]['Height'])
-        self.assertIsNone(data[2]['Weight'])
+        # Verify NA handling
+        self.assertIsNone(data[2][0]) # Height
+        self.assertIsNone(data[2][1]) # Weight
 
 if __name__ == '__main__':
     unittest.main()

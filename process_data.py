@@ -2,9 +2,10 @@ import argparse
 import csv
 import json
 import sys
+import re
 
 def parse_value(value):
-    if value == 'NA':
+    if value == 'NA' or value == '':
         return None
     try:
         if '.' in value:
@@ -13,70 +14,106 @@ def parse_value(value):
     except ValueError:
         return value
 
+def slugify(text):
+    text = text.lower()
+    text = re.sub(r'[^a-z0-9]+', '_', text)
+    return text.strip('_')
+
 def process_data(input_file, output_file):
-    data_rows = []
-    keys = []
-    countries = set()
-    sports = set()
+    athletes = {}
+    countries_set = set()
+    sports_set = set()
     
     try:
         with open(input_file, mode='r', encoding='utf-8') as csvfile:
-            reader = csv.reader(csvfile)
-            try:
-                header = next(reader)
-                keys = header # Store keys from header
-            except StopIteration:
-                print("Error: CSV file is empty")
-                sys.exit(1)
-
-            # Map for accessing columns by name for metadata extraction
-            col_map = {name: i for i, name in enumerate(header)}
-            
+            reader = csv.DictReader(csvfile)
             for row in reader:
-                clean_row = []
-                for val in row:
-                    clean_row.append(parse_value(val))
+                a_id = row['ID']
+                if a_id not in athletes:
+                    name = row['Name']
+                    name_parts = name.split(' ', 1)
+                    if len(name_parts) == 1:
+                        name_parts.append("")
+                    
+                    athletes[a_id] = {
+                        'Height': parse_value(row['Height']),
+                        'Weight': parse_value(row['Weight']),
+                        'Slug': slugify(name),
+                        'NameParts': name_parts,
+                        'Gold': 0,
+                        'Silver': 0,
+                        'Bronze': 0,
+                        'Team': row['Team'],
+                        'Sport': row['Sport'],
+                        'NOC': row['NOC'],
+                        'Sex': row['Sex'],
+                        'Medals': []
+                    }
                 
-                data_rows.append(clean_row)
-
-                # Extract metadata
-                if 'Team' in col_map:
-                    team_val = clean_row[col_map['Team']]
-                    if team_val:
-                        countries.add(team_val)
+                medal = row['Medal']
+                if medal != 'NA':
+                    athletes[a_id]['Medals'].append([row['Event'], medal.lower()])
+                    if medal == 'Gold':
+                        athletes[a_id]['Gold'] += 1
+                    elif medal == 'Silver':
+                        athletes[a_id]['Silver'] += 1
+                    elif medal == 'Bronze':
+                        athletes[a_id]['Bronze'] += 1
                 
-                if 'Sport' in col_map:
-                    sport_val = clean_row[col_map['Sport']]
-                    if sport_val:
-                        sports.add(sport_val)
+                countries_set.add(row['Team'])
+                sports_set.add(row['Sport'])
 
     except FileNotFoundError:
         print(f"Error: Input file '{input_file}' not found.")
         sys.exit(1)
+    except KeyError as e:
+        print(f"Error: Missing expected column in CSV: {e}")
+        sys.exit(1)
 
-    # Format metadata as array of arrays [['Value'], ...]
-    country_array = sorted([[c] for c in countries])
-    event_array = sorted([[s] for s in sports])
+    # Sort metadata
+    sorted_countries = sorted(list(countries_set))
+    sorted_sports = sorted(list(sports_set))
+    
+    country_map = {c: i for i, c in enumerate(sorted_countries)}
+    sport_map = {s: i for i, s in enumerate(sorted_sports)}
 
-    # Generate Compact JSON for data rows (One row per line)
-    # json.dumps with indent puts every item on a new line. 
-    # We want [ [row1], [row2] ].
+    # Convert metadata to array of arrays
+    country_array = [[c] for c in sorted_countries]
+    event_array = [[s] for s in sorted_sports]
+
+    # Convert athletes to list format
+    # [Height, Weight, Slug, [NameParts], Gold, Silver, Bronze, CountryIdx, SportIdx, NOC, Gender, [[Event, Medal], ...]]
+    olympian_array = []
+    for a in athletes.values():
+        olympian_array.append([
+            a['Height'],
+            a['Weight'],
+            a['Slug'],
+            a['NameParts'],
+            a['Gold'],
+            a['Silver'],
+            a['Bronze'],
+            country_map[a['Team']],
+            sport_map[a['Sport']],
+            a['NOC'],
+            a['Sex'],
+            a['Medals']
+        ])
+
+    # Generate Output
+    js_content = f"var countryArray = {json.dumps(country_array, indent=2)};\n"
+    js_content += f"var eventArray = {json.dumps(event_array, indent=2)};\n"
     
     data_js_str = "[\n"
-    for i, row in enumerate(data_rows):
-        # Dump the row as a compact list
+    for i, row in enumerate(olympian_array):
         row_str = json.dumps(row)
         data_js_str += "  " + row_str
-        if i < len(data_rows) - 1:
+        if i < len(olympian_array) - 1:
             data_js_str += ","
         data_js_str += "\n"
     data_js_str += "]"
-
-    # Wrap in JavaScript variable
-    js_content = f"const olympicDataKeys = {json.dumps(keys, indent=2)};\n"
-    js_content += f"const olympicData = {data_js_str};\n"
-    js_content += f"const countryArray = {json.dumps(country_array, indent=2)};\n"
-    js_content += f"const eventArray = {json.dumps(event_array, indent=2)};\n"
+    
+    js_content += f"var olympianArray = {data_js_str};\n"
 
     try:
         with open(output_file, 'w', encoding='utf-8') as jsfile:
@@ -91,5 +128,4 @@ if __name__ == "__main__":
     parser.add_argument('output', help='Path to output JS file')
     
     args = parser.parse_args()
-    
     process_data(args.input, args.output)

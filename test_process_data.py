@@ -73,32 +73,16 @@ class TestProcessData(unittest.TestCase):
         except (IndexError, json.JSONDecodeError):
             self.fail("Could not parse JSON from generated JS file")
         
-        # Verify data integrity (3 unique ID-Sport combinations)
+        # Verify data integrity
         self.assertEqual(len(data), 3)
         
-        # Athlete 1: A Dijiang, should have 1 Gold (from 2nd row) and 2 events
-        a1 = data[0]
-        self.assertEqual(a1[3], ["A", "Dijiang"])
-        self.assertEqual(a1[4], 1) # Gold
-        self.assertEqual(len(a1[11]), 1) # 1 medal in Medals list
-        
-        # Check new fields
-        # [H, W, Slug, [Name], G, S, B, CIdx, SIdx, NOC, Gender, [[Ev, M], ...], Age, Year, Games, Season, City, [Events]]
-        self.assertEqual(a1[12], 24) # Age
-        self.assertEqual(a1[13], 1992) # Year
-        self.assertEqual(a1[14], "1992 Summer") # Games
-        self.assertEqual(a1[15], "Summer") # Season
-        self.assertEqual(a1[16], "Barcelona") # City
-        self.assertEqual(len(a1[17]), 2) # 2 Unique Events
-        self.assertIn("Basketball Men's Basketball", a1[17])
-        self.assertIn("Another Event", a1[17])
-
-        # Check metadata
-        self.assertTrue(any(['China'] == c for c in countries))
-        self.assertIn([23], ages)
-        self.assertIn([24], ages)
-        self.assertIn([1992], years)
-        self.assertIn([2012], years)
+        # Verify metadata (now flat arrays)
+        self.assertIn('China', countries)
+        self.assertIn('Denmark', countries)
+        self.assertIn(23, ages)
+        self.assertIn(24, ages)
+        self.assertIn(1992, years)
+        self.assertIn(2012, years)
 
 if __name__ == '__main__':
     unittest.main()

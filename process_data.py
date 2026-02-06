@@ -19,6 +19,17 @@ def slugify(text):
     text = re.sub(r'[^a-z0-9]+', '_', text)
     return text.strip('_')
 
+def format_as_array_of_arrays(data_list):
+    """Formats a list of lists as a string with one inner list per line."""
+    output = "[\n"
+    for i, row in enumerate(data_list):
+        output += "  " + json.dumps(row)
+        if i < len(data_list) - 1:
+            output += ","
+        output += "\n"
+    output += "]"
+    return output
+
 def process_data(input_file, output_file):
     athletes = {}
     countries_set = set()
@@ -102,11 +113,11 @@ def process_data(input_file, output_file):
     country_map = {c: i for i, c in enumerate(sorted_countries)}
     sport_map = {s: i for i, s in enumerate(sorted_sports)}
 
-    # Convert metadata to array of arrays
-    country_array = [[c] for c in sorted_countries]
-    event_array = [[s] for s in sorted_sports]
-    age_array = [[a] for a in sorted_ages]
-    year_array = [[y] for y in sorted_years]
+    # Convert metadata to simple flat arrays
+    country_array = sorted_countries
+    event_array = sorted_sports
+    age_array = sorted_ages
+    year_array = sorted_years
 
     # Convert athletes to list format
     # [Height, Weight, Slug, [NameParts], Gold, Silver, Bronze, CountryIdx, SportIdx, NOC, Gender, [[Event, Medal], ...], Age, Year, Games, Season, City, [Events]]
@@ -136,19 +147,11 @@ def process_data(input_file, output_file):
     # Generate Output
     js_content = f"var countryArray = {json.dumps(country_array, indent=2)};\n"
     js_content += f"var eventArray = {json.dumps(event_array, indent=2)};\n"
-    js_content += f"var ageArray = {json.dumps(age_array, indent=2)};\n"
-    js_content += f"var yearArray = {json.dumps(year_array, indent=2)};\n"
+    js_content += f"var ageArray = {json.dumps(age_array)};\n"
+    js_content += f"var yearArray = {json.dumps(year_array)};\n\n"
     
-    data_js_str = "[\n"
-    for i, row in enumerate(olympian_array):
-        row_str = json.dumps(row)
-        data_js_str += "  " + row_str
-        if i < len(olympian_array) - 1:
-            data_js_str += ","
-        data_js_str += "\n"
-    data_js_str += "]"
-    
-    js_content += f"var olympianArray = {data_js_str};\n"
+    js_content += "// Schema: [Height, Weight, Slug, [NameParts], Gold, Silver, Bronze, CountryIdx, SportIdx, NOC, Gender, [[Event, Medal], ...], Age, Year, Games, Season, City, [Events]]\n"
+    js_content += f"var olympianArray = {format_as_array_of_arrays(olympian_array)};\n"
 
     try:
         with open(output_file, 'w', encoding='utf-8') as jsfile:

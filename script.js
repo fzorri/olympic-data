@@ -318,6 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'gold':
             case 'silver':
             case 'bronze':
+            case 'total_medals':
                 ops = ['>', '<', '=', '>=', '<='];
                 inputHtml = '<input type="number" id="filter-value" value="0">';
                 break;
@@ -538,23 +539,23 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'name': val = (athlete[3][0] + ' ' + athlete[3][1]).toLowerCase(); break;
             case 'gold': val = athlete[4]; break;
             case 'silver': val = athlete[5]; break;
-            case 'bronze': val = athlete[6]; break;
-            case 'country': val = athlete[7]; break; 
-            case 'sport': val = athlete[8]; break; 
-            case 'age': val = athlete[12]; break;
-            case 'year': val = athlete[13]; break;
-            case 'gender': val = athlete[10]; break;
-        }
-
-        var target = filter.value;
-        if (filter.field === 'name') {
-            return val.includes(target.toLowerCase());
-        }
-        
-        var isArray = Array.isArray(val);
-        
-        if (['height', 'weight', 'gold', 'silver', 'bronze', 'country', 'sport', 'age', 'year'].includes(filter.field)) {
-            // val is array for age/year, scalar for others.
+                        case 'bronze': val = athlete[6]; break; 
+                        case 'total_medals': val = (athlete[4] || 0) + (athlete[5] || 0) + (athlete[6] || 0); break;
+                        case 'country': val = athlete[7]; break; 
+                        case 'sport': val = athlete[8]; break; 
+                        case 'age': val = athlete[12]; break;
+                        case 'year': val = athlete[13]; break;
+                        case 'gender': val = athlete[10]; break;
+                    }
+            
+                    var target = filter.value;
+                    if (filter.field === 'name') {
+                        return val.includes(target.toLowerCase());
+                    }
+                    
+                    var isArray = Array.isArray(val);
+                    
+                    if (['height', 'weight', 'gold', 'silver', 'bronze', 'total_medals', 'country', 'sport', 'age', 'year'].includes(filter.field)) {            // val is array for age/year, scalar for others.
             // target is scalar.
             target = parseFloat(target);
         }

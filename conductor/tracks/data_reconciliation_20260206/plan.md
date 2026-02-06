@@ -25,4 +25,8 @@
 - [x] Task: Update `script.js` to render rich event history (Event, Year, Age, Medal) in detail panel. [commit: 750fd79]
 - [x] Task: Update `script.js` to calculate and display total medals for filtered athletes in the dashboard. [commit: d82d0c6]
 - [x] Task: Update `index.html` and `script.js` to display count of unplottable athletes (missing H/W) and allow viewing them. [commit: 5be342b]
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Advanced Stats & History' (Protocol in workflow.md) [checkpoint: ]
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Advanced Stats & History' (Protocol in workflow.md) [checkpoint: 2814618]
+
+## Phase 5: Final Polish
+- [x] Task: Implement "Total Medals" filter option in UI and logic (`gold + silver + bronze`). [commit: 3f8a9b2]
+- [ ] Task: Conductor - User Manual Verification 'Phase 5: Final Polish' (Protocol in workflow.md) [checkpoint: ]

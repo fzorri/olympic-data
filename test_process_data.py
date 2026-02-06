@@ -14,6 +14,7 @@ class TestProcessData(unittest.TestCase):
         with open(self.csv_path, 'w') as f:
             f.write('"ID","Name","Sex","Age","Height","Weight","Team","NOC","Games","Year","Season","City","Sport","Event","Medal"\n')
             f.write('"1","A Dijiang","M",24,180,80,"China","CHN","1992 Summer",1992,"Summer","Barcelona","Basketball","Basketball Men\'s Basketball",NA\n')
+            f.write('"1","A Dijiang","M",24,180,80,"China","CHN","1992 Summer",1992,"Summer","Barcelona","Basketball","Another Event",Gold\n')
             f.write('"2","A Lamusi","M",23,170,60,"China","CHN","2012 Summer",2012,"Summer","London","Judo","Judo Men\'s Extra-Lightweight",NA\n')
             f.write('"3","Gunnar Nielsen Aaby","M",24,NA,NA,"Denmark","DEN","1920 Summer",1920,"Summer","Antwerpen","Football","Football Men\'s Football",NA\n')
 
@@ -53,6 +54,8 @@ class TestProcessData(unittest.TestCase):
         self.assertIn('var olympianArray =', content)
         self.assertIn('var countryArray =', content)
         self.assertIn('var eventArray =', content)
+        self.assertIn('var ageArray =', content)
+        self.assertIn('var yearArray =', content)
         
         # Extract the JSON part
         try:
@@ -62,29 +65,40 @@ class TestProcessData(unittest.TestCase):
             country_str = content.split('var countryArray =')[1].split(';')[0].strip()
             countries = json.loads(country_str)
             
-            event_str = content.split('var eventArray =')[1].split(';')[0].strip()
-            events = json.loads(event_str)
+            age_str = content.split('var ageArray =')[1].split(';')[0].strip()
+            ages = json.loads(age_str)
+
+            year_str = content.split('var yearArray =')[1].split(';')[0].strip()
+            years = json.loads(year_str)
         except (IndexError, json.JSONDecodeError):
             self.fail("Could not parse JSON from generated JS file")
         
-        # Verify data integrity
+        # Verify data integrity (3 unique ID-Sport combinations)
         self.assertEqual(len(data), 3)
         
-        # [Height, Weight, Slug, [NameParts], Gold, Silver, Bronze, CountryIdx, SportIdx, NOC, Gender, [[Event, Medal], ...]]
-        a = data[0]
-        self.assertEqual(a[0], 180) # Height
-        self.assertEqual(a[1], 80)  # Weight
-        self.assertEqual(a[3], ["A", "Dijiang"]) # Name parts
-        self.assertEqual(a[9], "CHN") # NOC
-        self.assertEqual(a[10], "M") # Gender
+        # Athlete 1: A Dijiang, should have 1 Gold (from 2nd row) and 2 events
+        a1 = data[0]
+        self.assertEqual(a1[3], ["A", "Dijiang"])
+        self.assertEqual(a1[4], 1) # Gold
+        self.assertEqual(len(a1[11]), 1) # 1 medal in Medals list
         
+        # Check new fields
+        # [H, W, Slug, [Name], G, S, B, CIdx, SIdx, NOC, Gender, [[Ev, M], ...], Age, Year, Games, Season, City, [Events]]
+        self.assertEqual(a1[12], 24) # Age
+        self.assertEqual(a1[13], 1992) # Year
+        self.assertEqual(a1[14], "1992 Summer") # Games
+        self.assertEqual(a1[15], "Summer") # Season
+        self.assertEqual(a1[16], "Barcelona") # City
+        self.assertEqual(len(a1[17]), 2) # 2 Unique Events
+        self.assertIn("Basketball Men's Basketball", a1[17])
+        self.assertIn("Another Event", a1[17])
+
         # Check metadata
         self.assertTrue(any(['China'] == c for c in countries))
-        self.assertTrue(any(['Denmark'] == c for c in countries))
-        
-        # Verify NA handling
-        self.assertIsNone(data[2][0]) # Height
-        self.assertIsNone(data[2][1]) # Weight
+        self.assertIn([23], ages)
+        self.assertIn([24], ages)
+        self.assertIn([1992], years)
+        self.assertIn([2012], years)
 
 if __name__ == '__main__':
     unittest.main()

@@ -762,9 +762,19 @@ document.addEventListener('DOMContentLoaded', function() {
         detail.querySelector('h2').innerText = o[3][0] + ' ' + o[3][1];
         detail.querySelector('h3').innerText = countryArray[o[7]];
         
+        var ages = o[12];
+        var ageText = (ages && ages.length > 0) ? ages.join(', ') : 'N/A';
+        if (ages && ages.length > 1) {
+             // Optional: Show range if many? For now list is explicit and clear.
+             // If sorted, min-max is ages[0] - ages[length-1]
+             ageText = ages[0] + ' - ' + ages[ages.length-1] + ' (' + ages.length + ')'; 
+             // Or just list: ages.join(', ')
+             ageText = ages.join(', ');
+        }
+
         detail.querySelector('.height').innerHTML = '<span>' + termHeight + ':</span> ' + o[0] + ' cm';
         detail.querySelector('.weight').innerHTML = '<span>' + termWeight + ':</span> ' + o[1] + ' kg';
-        detail.querySelector('.age').innerHTML = '<span>Edad:</span> ' + (o[12] || 'N/A') + ' años';
+        detail.querySelector('.age').innerHTML = '<span>Edad:</span> ' + ageText + ' años';
         detail.querySelector('.gender').innerHTML = '<span>' + term_gender + ':</span> ' + (o[10] == 'M' ? term_male : term_female);
         detail.querySelector('.sport').innerHTML = '<span>' + term_sport + ':</span> ' + eventArray[o[8]];
         detail.querySelector('.games').innerHTML = '<span>Juegos:</span> ' + o[14] + ' (' + o[15] + ')';

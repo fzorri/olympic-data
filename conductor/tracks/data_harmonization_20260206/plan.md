@@ -3,7 +3,7 @@
 ## Phase 1: ETL Scripting & Variable Generation
 - [x] Task: Create `process_data.py` to transform CSV into a `.js` file containing a global `olympicData` variable. [commit: befc124]
 - [x] Task: Implement CSV parsing, cleaning, and metadata extraction (unique Sports/Countries). [commit: 3ee4766]
-- [x] Task: Create `DATA_WORKFLOW.md` documenting the commands to generate the `.js` data file.
+- [x] Task: Create `DATA_WORKFLOW.md` documenting the commands to generate the `.js` data file. [commit: 7c1719e]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: ETL Scripting & Variable Generation' (Protocol in workflow.md) [checkpoint: ]
 
 ## Phase 2: UI Integration

@@ -38,4 +38,4 @@
 
 ## Phase 7: Data & UI Logic Fixes [checkpoint: e11284c]
 - [x] Task: Update `script.js` `updateDashboard` to ignore null values when calculating Height/Weight averages. [commit: f9c35f7]
-- [ ] Task: Conductor - User Manual Verification 'Phase 7: Data & UI Logic Fixes' (Protocol in workflow.md) [checkpoint: ]
+- [x] Task: Conductor - User Manual Verification 'Phase 7: Data & UI Logic Fixes' (Protocol in workflow.md) [checkpoint: b5d12a5]

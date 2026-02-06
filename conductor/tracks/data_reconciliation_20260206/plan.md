@@ -36,7 +36,6 @@
 - [x] Task: Adjust grid layout to give more space to the athlete detail panel and list. [commit: 6ca44ac]
 - [x] Task: Conductor - User Manual Verification 'Phase 6: UI/UX Refinement' (Protocol in workflow.md) [checkpoint: 26e13d9]
 
-## Phase 7: Data & UI Logic Fixes
+## Phase 7: Data & UI Logic Fixes [checkpoint: e11284c]
 - [x] Task: Update `script.js` `updateDashboard` to ignore null values when calculating Height/Weight averages. [commit: f9c35f7]
-- [ ] Task: Update `script.js` `updateFilterUI` to populate dropdowns (Country, Sport, Age, Year) based on *currently filtered* athletes.
 - [ ] Task: Conductor - User Manual Verification 'Phase 7: Data & UI Logic Fixes' (Protocol in workflow.md) [checkpoint: ]

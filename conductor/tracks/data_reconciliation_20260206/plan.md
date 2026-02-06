@@ -7,8 +7,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: ETL Logic Enhancement' (Protocol in workflow.md) [checkpoint: 3f9f11a]
 
 ## Phase 2: UI & Filtering Logic
-- [x] Task: Update `script.js` to support new filtering fields (`age`, `year`) and their operators. [commit: a7b1c2d]
-- [ ] Task: Implement dynamic dropdown population for Age and Year filters.
-- [ ] Task: Update the athlete detail panel in `index.html` and `script.js` to display the new informational fields.
+- [x] Task: Update `script.js` to support new filtering fields (`age`, `year`) and their operators. [commit: 7d64392]
+- [x] Task: Implement dynamic dropdown population for Age and Year filters. [commit: 7d64392]
+- [x] Task: Update the athlete detail panel in `index.html` and `script.js` to display the new informational fields. [commit: 4e5f6g7]
 - [ ] Task: Verify that medal counting and event lists are correctly rendered.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI & Filtering Logic' (Protocol in workflow.md) [checkpoint: ]

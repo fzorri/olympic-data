@@ -732,14 +732,24 @@ document.addEventListener('DOMContentLoaded', function() {
         
         detail.querySelector('.height').innerHTML = '<span>' + termHeight + ':</span> ' + o[0] + ' cm';
         detail.querySelector('.weight').innerHTML = '<span>' + termWeight + ':</span> ' + o[1] + ' kg';
+        detail.querySelector('.age').innerHTML = '<span>Edad:</span> ' + (o[12] || 'N/A') + ' años';
         detail.querySelector('.gender').innerHTML = '<span>' + term_gender + ':</span> ' + (o[10] == 'M' ? term_male : term_female);
         detail.querySelector('.sport').innerHTML = '<span>' + term_sport + ':</span> ' + eventArray[o[8]];
+        detail.querySelector('.games').innerHTML = '<span>Juegos:</span> ' + o[14] + ' (' + o[15] + ')';
+        detail.querySelector('.city').innerHTML = '<span>Ciudad:</span> ' + o[16];
         
         var medalHtml = '';
         o[11].forEach(function(m) {
             medalHtml += '<li class="' + m[1] + '">' + m[0] + '</li>';
         });
         document.getElementById('olympian_medals').innerHTML = medalHtml;
+
+        var eventHtml = '';
+        o[17].forEach(function(e) {
+            eventHtml += '<li>' + e + '</li>';
+        });
+        document.getElementById('olympian_events').innerHTML = eventHtml;
+
         document.getElementById('olympian_detail').style.display = 'block';
     }
 

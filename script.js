@@ -514,20 +514,52 @@ document.addEventListener('DOMContentLoaded', function() {
         if (filter.field === 'name') {
             return val.includes(target.toLowerCase());
         }
+        
+        var isArray = Array.isArray(val);
+        
         if (['height', 'weight', 'gold', 'silver', 'bronze', 'country', 'sport', 'age', 'year'].includes(filter.field)) {
-            val = parseFloat(val);
+            // val is array for age/year, scalar for others.
+            // target is scalar.
             target = parseFloat(target);
         }
 
-        switch (filter.operator) {
-            case '>': return val > target;
-            case '<': return val < target;
-            case '=': return val == target; 
-            case '>=': return val >= target;
-            case '<=': return val <= target;
-            case 'is': return val == target; 
-            case 'is not': return val != target;
-            default: return false;
+        var check = (v, t, op) => {
+            v = parseFloat(v); // Ensure comparison as numbers
+            switch (op) {
+                case '>': return v > t;
+                case '<': return v < t;
+                case '=': return v == t; 
+                case '>=': return v >= t;
+                case '<=': return v <= t;
+                case 'is': return v == t; 
+                case 'is not': return v != t;
+                default: return false;
+            }
+        };
+
+        if (isArray) {
+            // If any value in the array matches, return true (OR logic within the field)
+            // For 'is not', ALL must not match? Or at least one does not match?
+            // Usually for filtering: 
+            // "Age = 25" -> Did they compete at 25? Yes -> Show.
+            // "Age > 25" -> Did they compete at >25? Yes -> Show.
+            // "Age != 25" -> Did they compete at NOT 25? 
+            //    If they competed at 25 and 29. "!= 25" usually means "exclude if 25 is present" OR "include if any is not 25".
+            //    Let's assume "Include if any history matches criteria".
+            //    Exception: 'is not' might mean "None of the history matches". 
+            //    But simplified: does ANY record satisfy the condition?
+            
+            if (filter.operator === 'is not' || filter.operator === '!=') {
+                 // For negation, we probably want to exclude if the value IS present.
+                 // "Age is not 25" -> Show athletes who NEVER competed at 25?
+                 // Or "Age is not 25" -> Show athletes who have an age that is not 25? (almost everyone)
+                 // Let's stick to "Does any value satisfy the condition".
+                 // For "is not 25", if they have [25, 29], 29 satisfies "is not 25". So they show up.
+                 return val.some(v => check(v, target, filter.operator));
+            }
+            return val.some(v => check(v, target, filter.operator));
+        } else {
+            return check(val, target, filter.operator);
         }
     }
 

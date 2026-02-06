@@ -1,0 +1,13 @@
+# Plan: Data Harmonization and CSV Integration
+
+## Phase 1: ETL Scripting & Variable Generation
+- [ ] Task: Create `process_data.py` to transform CSV into a `.js` file containing a global `olympicData` variable.
+- [ ] Task: Implement CSV parsing, cleaning, and metadata extraction (unique Sports/Countries).
+- [ ] Task: Create `DATA_WORKFLOW.md` documenting the commands to generate the `.js` data file.
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: ETL Scripting & Variable Generation' (Protocol in workflow.md) [checkpoint: ]
+
+## Phase 2: UI Integration
+- [ ] Task: Update `index.html` to include the generated `.js` file via `<script>` tag.
+- [ ] Task: Modify `script.js` to initialize the app using the `olympicData` and metadata variables.
+- [ ] Task: Verify the UI works with the processed sample data without a web server.
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Integration' (Protocol in workflow.md) [checkpoint: ]

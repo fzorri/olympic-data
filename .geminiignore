@@ -1,0 +1,6 @@
+# Ignore large data files to prevent token consumption
+athlete_events.csv
+athlete_events_full.csv
+data-full.js
+processed_data_full.js
+*.json

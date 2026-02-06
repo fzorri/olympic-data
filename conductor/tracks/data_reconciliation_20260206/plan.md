@@ -1,9 +1,9 @@
 # Plan: Enhanced Analytics & Data Reconciliation
 
 ## Phase 1: ETL Logic Enhancement
-- [x] Task: Update `process_data.py` to aggregate all CSV fields (`Age`, `Year`, `Games`, etc.) by Athlete ID. [commit: a7b1c2d]
-- [x] Task: Implement unique Age and Year extraction for metadata arrays. [commit: a7b1c2d]
-- [x] Task: Update the `olympianArray` output structure to include the new fields in a consistent order. [commit: a7b1c2d]
+- [x] Task: Update `process_data.py` to aggregate all CSV fields (`Age`, `Year`, `Games`, etc.) by Athlete ID. [commit: 5beaf07]
+- [x] Task: Implement unique Age and Year extraction for metadata arrays. [commit: 5beaf07]
+- [x] Task: Update the `olympianArray` output structure to include the new fields in a consistent order. [commit: 5beaf07]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: ETL Logic Enhancement' (Protocol in workflow.md) [checkpoint: ]
 
 ## Phase 2: UI & Filtering Logic

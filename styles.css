@@ -1,0 +1,435 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+#container {
+    width: 95%;
+    max-width: 980px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Filter Builder */
+#filter-builder {
+    background-color: #e3e3e3;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.filter-row select, .filter-row input {
+    padding: 8px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+#add-filter-btn {
+    padding: 8px 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#add-filter-btn:hover {
+    background-color: #555;
+}
+
+#active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-tag {
+    background-color: #df780c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-remove {
+    cursor: pointer;
+    font-weight: bold;
+    color: rgba(255,255,255,0.7);
+}
+.filter-remove:hover {
+    color: #fff;
+}
+
+/* Dashboard */
+#dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.stat-item {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.stat-item span {
+    font-size: 18px;
+    color: #df780c;
+    margin-left: 5px;
+}
+
+/* Comparison Controls */
+#controls {
+    background-color: #eee;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+#controls label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+#controls input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 60px;
+}
+
+#controls button {
+    padding: 8px 16px;
+    background-color: #df780c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+#controls button:hover {
+    background-color: #bf660a;
+}
+
+#status {
+    margin-bottom: 5px;
+    font-weight: bold;
+    min-height: 20px;
+    color: #555;
+}
+
+#percentile-feedback {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+    color: #2e7d32;
+    font-size: 14px;
+    line-height: 1.5;
+    display: none; /* Hidden by default */
+}
+
+/* Graph Container */
+#olympic_athletes {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#olympic_athletes_viz {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+    border: 1px solid #e0e0e0;
+    background-color: #fafafa;
+    overflow: hidden; /* Contain SVG */
+    /* Aspect ratio fallback or height control needed? 
+       We will let SVG control height mostly, or set min-height */
+    height: 500px;
+}
+
+/* Legends */
+.legend {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: #888;
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#tallest { top: 10px; left: 10px; }
+#heaviest { bottom: 10px; right: 10px; }
+
+#olympic_athletes_wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+/* SVG Graph */
+#graph-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: grab;
+}
+#graph-svg:active {
+    cursor: grabbing;
+}
+
+circle {
+    transition: r 0.2s, stroke 0.2s;
+}
+circle:hover {
+    stroke: #333;
+    stroke-width: 1px;
+}
+circle.selected {
+    stroke: #000;
+    stroke-width: 2px;
+    fill: #000 !important;
+    r: 6px; /* slightly larger */
+}
+
+/* Grid Lines */
+.grid-line {
+    stroke: #e0e0e0;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+}
+
+.grid-label {
+    fill: #999;
+    font-family: Arial, sans-serif;
+    /* font-size set dynamically in JS */
+}
+
+/* BMI Zones */
+.bmi-path {
+    fill: none;
+    stroke-width: 2px;
+    stroke-dasharray: 5, 5;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.6;
+}
+
+.bmi-label {
+    fill: #888;
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: middle;
+    opacity: 0.7;
+}
+
+/* Density Colors (Fill for SVG) */
+.o1 { fill: #f8ba41; }
+.o2 { fill: #f6a301; }
+.o3 { fill: #ee8301; }
+.o4 { fill: #ee8301; }
+.o5, .o6, .o7 { fill: #e55d02; }
+.o8, .o9, .o10, .o11, .o12 { fill: #e42d02; }
+
+/* Global Floating Tooltip */
+#graph-tooltip {
+    display: none;
+    position: fixed; /* Fixed relative to viewport or Absolute relative to body */
+    pointer-events: none; /* Let clicks pass through to graph */
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    z-index: 20000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transform: translate(-50%, -100%); /* Center bottom */
+    margin-top: -10px;
+    white-space: nowrap;
+}
+
+#graph-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+}
+
+
+/* Result Panel */
+#olympic_result_panel {
+    width: 230px;
+    min-width: 230px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    position: relative;
+    height: 500px;
+    overflow-y: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #olympic_athletes {
+        flex-direction: column;
+    }
+    #olympic_result_panel {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+    }
+}
+
+#olympian_detail {
+    padding: 15px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+#olympian_detail_inner {
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-weight: bold;
+    cursor: pointer;
+    color: #999;
+}
+.close:hover { color: #333; }
+
+#olympian_detail h2 {
+    font-size: 18px;
+    margin: 0 0 5px 0;
+    color: #df780c;
+}
+
+#olympian_detail h3 {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 10px 0;
+    font-weight: normal;
+}
+
+.photo {
+    width: 100%;
+    height: 120px;
+    background: #eee;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 12px;
+}
+.photo img { max-width: 100%; max-height: 100%; display: block; }
+
+#olympian_detail p {
+    font-size: 13px;
+    margin: 4px 0;
+}
+
+#olympian_detail p span {
+    font-weight: bold;
+    color: #555;
+    display: inline-block;
+    width: 70px;
+}
+
+#olympian_medals {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+#olympian_medals li {
+    font-size: 12px;
+    margin-bottom: 4px;
+    padding-left: 15px;
+    position: relative;
+}
+
+#olympian_medals li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #ccc;
+}
+#olympian_medals li.gold::before { color: #ffd700; }
+#olympian_medals li.silver::before { color: #c0c0c0; }
+#olympian_medals li.bronze::before { color: #cd7f32; }
+
+/* List View */
+#olympian_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.olym {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.olym:hover {
+    background-color: #fff8e1;
+}
+
+.olym strong {
+    display: block;
+    color: #df780c;
+    margin-bottom: 2px;
+}

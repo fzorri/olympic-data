@@ -8,7 +8,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: ETL Scripting & Variable Generation' (Protocol in workflow.md) [checkpoint: 1648691]
 
 ## Phase 2: UI Integration
-- [ ] Task: Update `index.html` to include the generated `.js` file via `<script>` tag.
+- [x] Task: Update `index.html` to include the generated `.js` file via `<script>` tag. [commit: 876775c]
 - [ ] Task: Modify `script.js` to initialize the app using the `olympicData` and metadata variables.
 - [ ] Task: Verify the UI works with the processed sample data without a web server.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Integration' (Protocol in workflow.md) [checkpoint: ]

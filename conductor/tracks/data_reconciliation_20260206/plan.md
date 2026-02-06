@@ -22,7 +22,7 @@
 
 ## Phase 4: Advanced Stats & History
 - [x] Task: Refactor `process_data.py` to store detailed event history `[{Event, Age, Year, Medal}]`. [commit: 067ad27]
-- [ ] Task: Update `script.js` to render rich event history (Event, Year, Age, Medal) in detail panel.
+- [x] Task: Update `script.js` to render rich event history (Event, Year, Age, Medal) in detail panel. [commit: 2h3i4j5]
 - [ ] Task: Update `script.js` to calculate and display total medals for filtered athletes in the dashboard.
 - [ ] Task: Update `index.html` and `script.js` to display count of unplottable athletes (missing H/W) and allow viewing them.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Advanced Stats & History' (Protocol in workflow.md) [checkpoint: ]

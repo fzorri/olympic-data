@@ -798,7 +798,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var eventHtml = '';
         o[17].forEach(function(e) {
-            eventHtml += '<li>' + e + '</li>';
+            // e is now {Event, Age, Year, Medal}
+            // Medal can be 'NA', 'gold', 'silver', 'bronze'
+            var medalClass = '';
+            var medalIcon = '';
+            if (e.Medal && e.Medal !== 'NA') {
+                medalClass = e.Medal.toLowerCase();
+                // Optional: medalIcon = ' <span class="medal-icon ' + medalClass + '">●</span>';
+                medalIcon = ' (' + e.Medal + ')';
+            }
+            
+            var details = [];
+            if (e.Year) details.push(e.Year);
+            if (e.Age) details.push(e.Age + ' años');
+            
+            var detailText = details.length > 0 ? ' <small>[' + details.join(', ') + ']</small>' : '';
+            
+            eventHtml += '<li class="' + medalClass + '">' + e.Event + detailText + medalIcon + '</li>';
         });
         document.getElementById('olympian_events').innerHTML = eventHtml;
 

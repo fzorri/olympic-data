@@ -14,7 +14,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: UI & Filtering Logic' (Protocol in workflow.md) [checkpoint: implicit_user_approval]
 
 ## Phase 3: Refinement & Edge Cases
-- [x] Task: Refactor `process_data.py` to store `Age` and `Year` as arrays (history) instead of single values. [commit: e1f2g3h]
+- [x] Task: Refactor `process_data.py` to store `Age` and `Year` as arrays (history) instead of single values. [commit: 98892c9]
 - [ ] Task: Update `script.js` filtering logic (`checkCondition`) to match against arrays for Age and Year.
 - [ ] Task: Update `script.js` display logic (`showDetail`) to show Age/Year ranges or lists.
 - [ ] Task: Update `script.js` `renderGraph` to exclude athletes with missing Height or Weight from the plot.

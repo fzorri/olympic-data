@@ -310,6 +310,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 ops = ['>', '<', '=', '>=', '<='];
                 inputHtml = '<input type="number" id="filter-value" value="0">';
                 break;
+            case 'age':
+                ops = ['>', '<', '=', '>=', '<='];
+                inputHtml = '<select id="filter-value">';
+                ageArray.forEach(age => {
+                    inputHtml += '<option value="' + age + '">' + age + '</option>';
+                });
+                inputHtml += '</select>';
+                break;
+            case 'year':
+                ops = ['>', '<', '=', '>=', '<='];
+                inputHtml = '<select id="filter-value">';
+                yearArray.forEach(year => {
+                    inputHtml += '<option value="' + year + '">' + year + '</option>';
+                });
+                inputHtml += '</select>';
+                break;
             case 'name':
                 ops = ['contains'];
                 inputHtml = '<input type="text" id="filter-value" placeholder="Nombre">';
@@ -322,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ops = ['is', 'is not'];
                 inputHtml = '<select id="filter-value">';
                 // Create sortable array preserving original index
-                var sortedCountries = countryArray.map((c, i) => ({ name: c[0], index: i }));
+                var sortedCountries = countryArray.map((name, i) => ({ name: name, index: i }));
                 sortedCountries.sort((a, b) => a.name.localeCompare(b.name, 'es'));
                 
                 sortedCountries.forEach(item => {
@@ -334,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ops = ['is', 'is not'];
                 inputHtml = '<select id="filter-value">';
                 // Create sortable array preserving original index
-                var sortedSports = eventArray.map((e, i) => ({ name: e[0], index: i }));
+                var sortedSports = eventArray.map((name, i) => ({ name: name, index: i }));
                 sortedSports.sort((a, b) => a.name.localeCompare(b.name, 'es'));
 
                 sortedSports.forEach(item => {
@@ -472,7 +488,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (topCIdx !== -1) {
-            dashCountry.innerText = countryArray[topCIdx][0] + ' (' + maxC + ')';
+            dashCountry.innerText = countryArray[topCIdx] + ' (' + maxC + ')';
         } else {
             dashCountry.innerText = '-';
         }
@@ -489,6 +505,8 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'bronze': val = athlete[6]; break;
             case 'country': val = athlete[7]; break; 
             case 'sport': val = athlete[8]; break; 
+            case 'age': val = athlete[12]; break;
+            case 'year': val = athlete[13]; break;
             case 'gender': val = athlete[10]; break;
         }
 
@@ -496,7 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (filter.field === 'name') {
             return val.includes(target.toLowerCase());
         }
-        if (['height', 'weight', 'gold', 'silver', 'bronze', 'country', 'sport'].includes(filter.field)) {
+        if (['height', 'weight', 'gold', 'silver', 'bronze', 'country', 'sport', 'age', 'year'].includes(filter.field)) {
             val = parseFloat(val);
             target = parseFloat(target);
         }
@@ -768,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (dist < minDist) {
                 minDist = dist;
-                closestSportName = eventArray[sIdx][0]; // eventArray is array of arrays
+                closestSportName = eventArray[sIdx]; // eventArray is flat array
             }
         }
 

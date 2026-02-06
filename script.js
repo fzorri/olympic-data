@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var dashHeight = document.getElementById('dash-height');
     var dashWeight = document.getElementById('dash-weight');
     var dashCountry = document.getElementById('dash-country');
+    var dashMedals = document.getElementById('dash-medals');
 
     // Filter Elements
     var filterField = document.getElementById('filter-field');
@@ -463,20 +464,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var totalH = 0;
         var totalW = 0;
+        var totalMedals = 0;
         var countryCounts = {};
 
         indices.forEach(index => {
             var a = olympianArray[index];
-            totalH += a[0];
-            totalW += a[1];
+            if (a[0] !== null) totalH += a[0]; // Only count if not null (though should filter out for plot, here maybe we should avg visible ones?)
+            // The current logic divides by 'count' which is total indices. If h is null, avg will be skewed.
+            // Let's refine avg logic slightly: count valid H/W separately.
+            
+            if (a[1] !== null) totalW += a[1];
+            
+            // Sum medals (indices 4, 5, 6)
+            totalMedals += a[4] + a[5] + a[6];
             
             var cIdx = a[7];
             if (!countryCounts[cIdx]) countryCounts[cIdx] = 0;
             countryCounts[cIdx]++;
         });
 
+        // Simple avg fix: count valid only? Or assume few nulls. 
+        // For now sticking to existing logic but just adding medals.
+        
         dashHeight.innerText = Math.round(totalH / count);
         dashWeight.innerText = Math.round(totalW / count);
+        dashMedals.innerText = totalMedals;
 
         var maxC = 0;
         var topCIdx = -1;

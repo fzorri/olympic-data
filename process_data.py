@@ -14,30 +14,42 @@ def parse_value(value):
         return value
 
 def process_data(input_file, output_file):
-    data = []
+    data_rows = []
+    keys = []
     countries = set()
     sports = set()
     
     try:
         with open(input_file, mode='r', encoding='utf-8') as csvfile:
-            reader = csv.DictReader(csvfile)
+            reader = csv.reader(csvfile)
+            try:
+                header = next(reader)
+                keys = header # Store keys from header
+            except StopIteration:
+                print("Error: CSV file is empty")
+                sys.exit(1)
+
+            # Map for accessing columns by name for metadata extraction
+            col_map = {name: i for i, name in enumerate(header)}
+            
             for row in reader:
-                clean_row = {}
-                for key, value in row.items():
-                    clean_row[key] = parse_value(value)
+                clean_row = []
+                for val in row:
+                    clean_row.append(parse_value(val))
                 
+                data_rows.append(clean_row)
+
                 # Extract metadata
-                if clean_row.get('Team'):
-                    # Handle "Denmark/Sweden" cases if necessary? 
-                    # For now, just taking the Team as is to be simple, 
-                    # or splitting by '/' could be an option but might introduce noise.
-                    # Looking at sample: "Denmark/Sweden" -> just add it.
-                    countries.add(clean_row['Team'])
+                if 'Team' in col_map:
+                    team_val = clean_row[col_map['Team']]
+                    if team_val:
+                        countries.add(team_val)
                 
-                if clean_row.get('Sport'):
-                    sports.add(clean_row['Sport'])
-                    
-                data.append(clean_row)
+                if 'Sport' in col_map:
+                    sport_val = clean_row[col_map['Sport']]
+                    if sport_val:
+                        sports.add(sport_val)
+
     except FileNotFoundError:
         print(f"Error: Input file '{input_file}' not found.")
         sys.exit(1)
@@ -46,8 +58,23 @@ def process_data(input_file, output_file):
     country_array = sorted([[c] for c in countries])
     event_array = sorted([[s] for s in sports])
 
+    # Generate Compact JSON for data rows (One row per line)
+    # json.dumps with indent puts every item on a new line. 
+    # We want [ [row1], [row2] ].
+    
+    data_js_str = "[\n"
+    for i, row in enumerate(data_rows):
+        # Dump the row as a compact list
+        row_str = json.dumps(row)
+        data_js_str += "  " + row_str
+        if i < len(data_rows) - 1:
+            data_js_str += ","
+        data_js_str += "\n"
+    data_js_str += "]"
+
     # Wrap in JavaScript variable
-    js_content = f"const olympicData = {json.dumps(data, indent=2)};\n"
+    js_content = f"const olympicDataKeys = {json.dumps(keys, indent=2)};\n"
+    js_content += f"const olympicData = {data_js_str};\n"
     js_content += f"const countryArray = {json.dumps(country_array, indent=2)};\n"
     js_content += f"const eventArray = {json.dumps(event_array, indent=2)};\n"
 

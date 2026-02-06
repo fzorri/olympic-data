@@ -51,14 +51,21 @@ class TestProcessData(unittest.TestCase):
             
         # Check for global variable declaration
         self.assertIn('const olympicData =', content)
+        self.assertIn('const olympicDataKeys =', content)
         self.assertIn('const countryArray =', content)
         self.assertIn('const eventArray =', content)
         
         # Extract the JSON part (crude parsing for testing)
         try:
+            keys_str = content.split('const olympicDataKeys =')[1].split(';')[0].strip()
+            keys = json.loads(keys_str)
+
             json_str = content.split('const olympicData =')[1].split(';')[0].strip()
-            data = json.loads(json_str)
+            data_rows = json.loads(json_str)
             
+            # Reconstruct objects for validation
+            data = [dict(zip(keys, row)) for row in data_rows]
+
             country_str = content.split('const countryArray =')[1].split(';')[0].strip()
             countries = json.loads(country_str)
             

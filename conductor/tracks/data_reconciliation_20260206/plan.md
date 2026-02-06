@@ -32,6 +32,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 5: Final Polish' (Protocol in workflow.md) [checkpoint: ca4bb52]
 
 ## Phase 6: UI/UX Refinement
-- [x] Task: Update `styles.css` to expand the main container width and improve responsiveness. [commit: a7b8c9d]
+- [x] Task: Update `styles.css` to expand the main container width and improve responsiveness. [commit: 6ca44ac]
 - [ ] Task: Adjust grid layout to give more space to the athlete detail panel and list.
 - [ ] Task: Conductor - User Manual Verification 'Phase 6: UI/UX Refinement' (Protocol in workflow.md) [checkpoint: ]

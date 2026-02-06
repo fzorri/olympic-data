@@ -18,4 +18,11 @@
 - [x] Task: Update `script.js` filtering logic (`checkCondition`) to match against arrays for Age and Year. [commit: f516cb1]
 - [x] Task: Update `script.js` display logic (`showDetail`) to show Age/Year ranges or lists. [commit: 16dee49]
 - [x] Task: Update `script.js` `renderGraph` to exclude athletes with missing Height or Weight from the plot. [commit: 90dfd55]
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Refinement & Edge Cases' (Protocol in workflow.md) [checkpoint: ]
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Refinement & Edge Cases' (Protocol in workflow.md) [checkpoint: 8c6344c]
+
+## Phase 4: Advanced Stats & History
+- [ ] Task: Refactor `process_data.py` to store detailed event history `[{Event, Age, Year, Medal}]`.
+- [ ] Task: Update `script.js` to render rich event history (Event, Year, Age, Medal) in detail panel.
+- [ ] Task: Update `script.js` to calculate and display total medals for filtered athletes in the dashboard.
+- [ ] Task: Update `index.html` and `script.js` to display count of unplottable athletes (missing H/W) and allow viewing them.
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Advanced Stats & History' (Protocol in workflow.md) [checkpoint: ]

@@ -69,12 +69,22 @@ def process_data(input_file, output_file):
                         'Season': row['Season'],
                         'City': row['City'],
                         'Medals': [],
-                        'Events': set()
+                        'Events': [] # Changed from set to list of objects
                     }
                 
                 medal = row['Medal']
                 event = row['Event']
-                athletes[key]['Events'].add(event)
+                age = parse_value(row['Age'])
+                year = parse_value(row['Year'])
+                
+                # Store rich event data
+                event_data = {
+                    'Event': event,
+                    'Age': age,
+                    'Year': year,
+                    'Medal': medal
+                }
+                athletes[key]['Events'].append(event_data)
                 
                 if medal != 'NA':
                     athletes[key]['Medals'].append([event, medal.lower()])
@@ -88,12 +98,10 @@ def process_data(input_file, output_file):
                 countries_set.add(row['Team'])
                 sports_set.add(sport)
                 
-                age = parse_value(row['Age'])
                 if age is not None:
                     athletes[key]['Ages'].add(age)
                     ages_set.add(age)
                 
-                year = parse_value(row['Year'])
                 if year is not None:
                     athletes[key]['Years'].add(year)
                     years_set.add(year)
@@ -121,9 +129,12 @@ def process_data(input_file, output_file):
     year_array = sorted_years
 
     # Convert athletes to list format
-    # [Height, Weight, Slug, [NameParts], Gold, Silver, Bronze, CountryIdx, SportIdx, NOC, Gender, [[Event, Medal], ...], [Ages], [Years], Games, Season, City, [Events]]
+    # [Height, Weight, Slug, [NameParts], Gold, Silver, Bronze, CountryIdx, SportIdx, NOC, Gender, [[Event, Medal], ...], [Ages], [Years], Games, Season, City, [{Event, Age, Year, Medal}, ...]]
     olympian_array = []
     for a in athletes.values():
+        # Sort events by Year then Event
+        sorted_events = sorted(a['Events'], key=lambda x: (x['Year'] if x['Year'] else 0, x['Event']))
+        
         olympian_array.append([
             a['Height'],
             a['Weight'],
@@ -142,7 +153,7 @@ def process_data(input_file, output_file):
             a['Games'],
             a['Season'],
             a['City'],
-            sorted(list(a['Events']))
+            sorted_events
         ])
 
     # Generate Output
@@ -151,7 +162,7 @@ def process_data(input_file, output_file):
     js_content += f"var ageArray = {json.dumps(age_array)};\n"
     js_content += f"var yearArray = {json.dumps(year_array)};\n\n"
     
-    js_content += "// Schema: [Height, Weight, Slug, [NameParts], Gold, Silver, Bronze, CountryIdx, SportIdx, NOC, Gender, [[Event, Medal], ...], [Ages], [Years], Games, Season, City, [Events]]\n"
+    js_content += "// Schema: [Height, Weight, Slug, [NameParts], Gold, Silver, Bronze, CountryIdx, SportIdx, NOC, Gender, [[Event, Medal], ...], [Ages], [Years], Games, Season, City, [{Event, Age, Year, Medal}, ...]]\n"
     js_content += f"var olympianArray = {format_as_array_of_arrays(olympian_array)};\n"
 
     try:

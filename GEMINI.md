@@ -9,16 +9,13 @@ When displaying code for solutions, suppress line number so I can copy and paste
 
 ## Project Overview
 
-The application is a comprehensive **command line program to transcript audio using whisper large and the groq. api** 
-We are going to work first in a version that pass the audio and return the transcription.
-Then we'll improve the command so we can pass a folder with audio and return the transcribed test for every audio sent.
+The application is a comprehensive **UI interface based on HTML,JS and CSS to visualize and analyze olympic data results** 
 
-A summary for this project can be seen in the SUMMARY.md file, where you will add content comment about the proyect process, along the dates.
 The purpose of SUMMARY.md is adding (appending) notes about different progress made to the project.
 
 Our current goal is refining and extending (if needed) the project.
 
-The current project will have these technologies: Python
+The current project will have these technologies: HTML, Javascript, CSS
 
 ## Core Principles of Plan Mode
 
@@ -38,6 +35,5 @@ Your output must be a well-formatted markdown response containing two distinct s
 
 1.  **Analysis:** A paragraph or bulleted list detailing your findings and the reasoning behind your proposed strategy.
 2.  **Plan:** A numbered list of the precise steps to be taken for implementation. The final step must always be presenting the plan for approval.
-
 
 NOTE: If in plan mode, do not implement the plan. You are only allowed to plan. Confirmation comes from a user message.

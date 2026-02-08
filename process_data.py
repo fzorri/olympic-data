@@ -30,12 +30,25 @@ def format_as_array_of_arrays(data_list):
     output += "]"
     return output
 
-def process_data(input_file, output_file):
+def load_noc_data(noc_file_path):
+    noc_map = {}
+    try:
+        with open(noc_file_path, mode='r', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                noc_map[row['NOC']] = row['region']
+    except FileNotFoundError:
+        print(f"Error: NOC file '{noc_file_path}' not found.")
+        sys.exit(1)
+    return noc_map
+
+def process_data(input_file, noc_file, output_file):
     athletes = {}
-    countries_set = set()
     sports_set = set()
     ages_set = set()
     years_set = set()
+
+    noc_data = load_noc_data(noc_file)
     
     try:
         with open(input_file, mode='r', encoding='utf-8') as csvfile:
@@ -95,7 +108,6 @@ def process_data(input_file, output_file):
                     elif medal == 'Bronze':
                         athletes[key]['Bronze'] += 1
                 
-                countries_set.add(row['Team'])
                 sports_set.add(sport)
                 
                 if age is not None:
@@ -114,7 +126,7 @@ def process_data(input_file, output_file):
         sys.exit(1)
 
     # Sort metadata
-    sorted_countries = sorted(list(countries_set))
+    sorted_countries = sorted(list(set(noc_data.values())))
     sorted_sports = sorted(list(sports_set))
     sorted_ages = sorted(list(ages_set))
     sorted_years = sorted(list(years_set))
@@ -135,6 +147,9 @@ def process_data(input_file, output_file):
         # Sort events by Year then Event
         sorted_events = sorted(a['Events'], key=lambda x: (x['Year'] if x['Year'] else 0, x['Event']))
         
+        country_name = noc_data.get(a['NOC'], a['Team']) # Fallback to Team if NOC not found
+        country_idx = country_map.get(country_name)
+
         olympian_array.append([
             a['Height'],
             a['Weight'],
@@ -143,7 +158,7 @@ def process_data(input_file, output_file):
             a['Gold'],
             a['Silver'],
             a['Bronze'],
-            country_map[a['Team']],
+            country_idx,
             sport_map[a['Sport']],
             a['NOC'],
             a['Sex'],
@@ -174,8 +189,10 @@ def process_data(input_file, output_file):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Convert Olympic CSV data to JavaScript file.')
-    parser.add_argument('input', help='Path to input CSV file')
-    parser.add_argument('output', help='Path to output JS file')
+    parser.add_argument('--input', help='Path to input CSV file', required=True)
+    parser.add_argument('--noc', help='Path to NOC regions CSV file', required=True)
+    parser.add_argument('--output', help='Path to output JS file', required=True)
     
     args = parser.parse_args()
-    process_data(args.input, args.output)
+    process_data(args.input, args.noc, args.output)
+

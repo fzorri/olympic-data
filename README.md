@@ -7,3 +7,11 @@ key advantages of Olympic:
 
 # History
 20260205 - First Version. 
+20260206 - Improved version, taking advantage of data provided by Kaggle website, specifically:
+https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results
+
+Some heavy improvements:
+- Extended interface
+- Python conversion command line to convert from .csv file to .js file.
+- Added several fields for extended filtering (year, medalls, age, etc.)
+- Javascript coded refactored to have different object responsibility.

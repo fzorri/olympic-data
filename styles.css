@@ -23,6 +23,56 @@ h1 {
     color: #333;
 }
 
+/* Tab Navigation */
+#tab-navigation {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #666;
+    transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+    background-color: #e0e0e0;
+}
+
+.tab-button.active {
+    background-color: #fff;
+    color: #333;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+}
+
+.tab-button:first-child {
+    border-top-left-radius: 4px;
+}
+
+.tab-button:last-child {
+    border-top-right-radius: 4px;
+}
+
+/* Tab Content */
+.tab-content {
+    position: relative;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
 /* Filter Builder */
 #filter-builder {
     background-color: #e3e3e3;
@@ -112,6 +162,23 @@ h1 {
     margin-left: 5px;
 }
 
+/* Geographic Dashboard */
+#geographic-dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: #e3e3e3;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+}
+
+#geographic-dashboard .stat-item {
+    flex: 1;
+    min-width: 150px;
+}
+
 /* Comparison Controls */
 #controls {
     background-color: #eee;
@@ -169,6 +236,59 @@ h1 {
     font-size: 14px;
     line-height: 1.5;
     display: none; /* Hidden by default */
+}
+
+/* Geographic Visualization */
+#geographic-container {
+    width: 100%;
+    height: 600px;
+    border: 1px solid #e0e0e0;
+    background-color: #fafafa;
+    position: relative;
+    overflow: hidden;
+}
+
+#world-map {
+    width: 100%;
+    height: 100%;
+}
+
+#world-map svg {
+    width: 100%;
+    height: 100%;
+}
+
+.country {
+    fill: #ccc;
+    stroke: #fff;
+    stroke-width: 1;
+    transition: fill 0.3s;
+}
+
+.country:hover {
+    stroke: #333;
+    stroke-width: 2;
+}
+
+.country.active {
+    stroke: #333;
+    stroke-width: 2;
+}
+
+.continent {
+    fill: #8bc34a;
+    stroke: #7cb342;
+    stroke-width: 1;
+}
+
+.legend {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+
+.legend-title {
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 /* Graph Container */
@@ -428,8 +548,208 @@ circle.selected {
     background-color: #fff8e1;
 }
 
-.olym strong {
+ .olym strong {
     display: block;
     color: #df780c;
     margin-bottom: 2px;
-}
+ }
+ 
+ /* Map Tooltip */
+ .map-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 200px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+ }
+ 
+ .map-tooltip strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+ }
+ 
+ .map-tooltip br {
+    margin: 2px 0;
+ }
+ 
+ /* Ocean background for map */
+ .ocean-background {
+    fill: #e6f7ff;
+ }
+ 
+ /* Country hover effects */
+ .country:hover {
+    stroke: #333 !important;
+    stroke-width: 1.5px !important;
+    cursor: pointer;
+ }
+ 
+ /* Legend for map colors */
+ .map-legend {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 11px;
+    z-index: 10;
+ }
+ 
+ .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+ }
+ 
+  .legend-color {
+     width: 12px;
+     height: 12px;
+     margin-right: 6px;
+     border-radius: 2px;
+  }
+  
+  /* New gradient legend styles */
+  .gradient-legend {
+     display: block;
+     margin: 5px 0;
+  }
+  
+  .gradient-bar {
+     rx: 2px;
+     ry: 2px;
+  }
+  
+  .no-data-sample {
+     rx: 2px;
+     ry: 2px;
+  }
+  
+  .no-data-label {
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  
+  .log-marker {
+     pointer-events: none;
+  }
+  
+  .marker-label {
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     pointer-events: none;
+  }
+  
+  .gradient-hover {
+     cursor: crosshair;
+     transition: opacity 0.2s;
+  }
+  
+  .gradient-hover:hover {
+     opacity: 0.2;
+     background: rgba(0, 0, 0, 0.1);
+  }
+  
+  .gradient-tooltip {
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+     max-width: 180px;
+     opacity: 0;
+     transition: opacity 0.2s;
+  }
+  
+  .gradient-tooltip.visible {
+     opacity: 1;
+  }
+  
+  .log-marker {
+     transition: stroke 0.2s;
+  }
+  
+  .gradient-bar:hover ~ .log-marker {
+     stroke: #333;
+     stroke-width: 1.5;
+  }
+  
+  .marker-label {
+     transition: fill 0.2s, font-weight 0.2s;
+  }
+  
+  .gradient-bar:hover ~ .marker-label {
+     fill: #000;
+     font-weight: bold;
+  }
+  
+  .hover-indicator {
+     transition: opacity 0.2s, x1 0.1s, x2 0.1s;
+     filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+  }
+  
+  .legend-explanation {
+     border-top: 1px solid #eee;
+     padding-top: 6px;
+  }
+  
+  .log-scale-explanation {
+     border-top: 1px solid #eee;
+     padding-top: 6px;
+     margin-top: 8px;
+  }
+  
+  /* Zoom controls */
+ .reset-zoom-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    padding: 5px 10px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+ }
+ 
+ .reset-zoom-btn:hover {
+    background: #f5f5f5;
+ }
+ 
+ /* Zoom cursor for map */
+ #world-map svg {
+    cursor: move;
+ }
+ 
+ /* Zoom controls container */
+ .zoom-controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+ }
+ 
+ .zoom-btn {
+    width: 30px;
+    height: 30px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+ }
+ 
+ .zoom-btn:hover {
+    background: #f5f5f5;
+ }

@@ -10,6 +10,12 @@
      <div id="container">
          <h1>Londres 2012: ¿Qué atleta olímpico serías tú?</h1>
 
+        <!-- Tab Navigation -->
+        <div id="tab-navigation">
+            <button class="tab-button active" data-tab="physical">Perfil Físico</button>
+            <button class="tab-button" data-tab="geographic">Distribución Geográfica</button>
+        </div>
+
          <div id="filter-builder">
             <h3>Filtrar Atletas</h3>
             <div class="filter-row">
@@ -40,80 +46,110 @@
             </div>
         </div>
         
-        <div id="dashboard">
-            <div class="stat-item">Atletas: <span id="dash-count">0</span></div>
-            <div class="stat-item">Estatura Prom.: <span id="dash-height">0</span> cm</div>
-            <div class="stat-item">Peso Prom.: <span id="dash-weight">0</span> kg</div>
-            <div class="stat-item">País Top: <span id="dash-country">-</span></div>
-            <div class="stat-item">Medallas: <span id="dash-medals">0</span></div>
-            <div class="stat-item warning" id="dash-hidden-container" style="display:none;">Sin datos: <a href="#" id="view-hidden-btn"><span id="dash-hidden">0</span></a></div>
-        </div>
+<!-- Tab Content Containers -->
+        <div class="tab-content">
+            <!-- Physical Profile Tab -->
+            <div id="physical-tab" class="tab-pane active">
+                <div id="dashboard">
+                    <div class="stat-item">Atletas: <span id="dash-count">0</span></div>
+                    <div class="stat-item">Estatura Prom.: <span id="dash-height">0</span> cm</div>
+                    <div class="stat-item">Peso Prom.: <span id="dash-weight">0</span> kg</div>
+                    <div class="stat-item">País Top: <span id="dash-country">-</span></div>
+                    <div class="stat-item">Medallas: <span id="dash-medals">0</span></div>
+                    <div class="stat-item warning" id="dash-hidden-container" style="display:none;">Sin datos: <a href="#" id="view-hidden-btn"><span id="dash-hidden">0</span></a></div>
+                </div>
 
-        <div id="controls">
-             <label for="height">Estatura (cm):</label>
-             <input type="number" id="height" value="175">
-             <label for="weight">Peso (kg):</label>
-             <input type="number" id="weight" value="70">
-             <button id="compareBtn">Comparar</button>
-         </div>
-
-                 <div id="status"></div>
-                 <div id="percentile-feedback"></div>
-         
-                 <div id="olympic_athletes">             <div id="olympic_athletes_viz">
-                 <span id="tallest" class="legend">Más alto</span>
-                 <span id="heaviest" class="legend">Más pesado</span>
-
-                                 <div id="olympic_athletes_wrapper">
-                                     <!-- SVG Graph Container -->
-                                                                             <svg id="graph-svg" viewBox="0 0 740 480" preserveAspectRatio="xMidYMid meet">
-                                                                                 <g id="plot-area">
-                                                                                     <g id="bmi-layer"></g>
-                                                                                     <g id="grid-layer"></g>
-                                                                                     <g id="dots-layer"></g>
-                                                                                 </g>
-                                                                             </svg>                                 </div>
-                             </div>
-                             
-                             <!-- Global Tooltip -->
-                             <div id="graph-tooltip"></div>
-                 
-                             <div id="olympic_result_panel">                 <!-- Detail view for a selected athlete -->
-                 <div id="olympian_detail" style="display:none;">
-                     <div id="olympian_detail_inner">
-                         <span class="close" title="Cerrar">[x]</span>
-                         <h2></h2>
-                         <h3></h3>
-                         <div class="photo"><img src="" alt=""></div>
-                         <p class="height"></p>
-                         <p class="weight"></p>
-                         <p class="age"></p>
-                         <p class="gender"></p>
-                         <p class="sport"></p>
-                         <p class="games"></p>
-                         <p class="city"></p>
-                         <p class="medals-summary"></p>
-                         <p class="medals"></p>
-                         <ol id="olympian_medals"></ol>
-                         <p class="events-label"><strong>Eventos:</strong></p>
-                         <ul id="olympian_events"></ul>
-                     </div>
+                <div id="controls">
+                     <label for="height">Estatura (cm):</label>
+                     <input type="number" id="height" value="175">
+                     <label for="weight">Peso (kg):</label>
+                     <input type="number" id="weight" value="70">
+                     <button id="compareBtn">Comparar</button>
                  </div>
 
-                 <!-- List of matches for a specific coordinate -->
-                 <ol id="olympian_list"></ol>
-             </div>
-         </div>
+                         <div id="status"></div>
+                         <div id="percentile-feedback"></div>
+                 
+                         <div id="olympic_athletes">             <div id="olympic_athletes_viz">
+                         <span id="tallest" class="legend">Más alto</span>
+                         <span id="heaviest" class="legend">Más pesado</span>
+
+                                         <div id="olympic_athletes_wrapper">
+                                             <!-- SVG Graph Container -->
+                                                                                     <svg id="graph-svg" viewBox="0 0 740 480" preserveAspectRatio="xMidYMid meet">
+                                                                                         <g id="plot-area">
+                                                                                             <g id="bmi-layer"></g>
+                                                                                             <g id="grid-layer"></g>
+                                                                                             <g id="dots-layer"></g>
+                                                                                         </g>
+                                                                                     </svg>                                 </div>
+                                     </div>
+                                     
+                                     <!-- Global Tooltip -->
+                                     <div id="graph-tooltip"></div>
+                         
+                                     <div id="olympic_result_panel">                 <!-- Detail view for a selected athlete -->
+                         <div id="olympian_detail" style="display:none;">
+                             <div id="olympian_detail_inner">
+                                 <span class="close" title="Cerrar">[x]</span>
+                                 <h2></h2>
+                                 <h3></h3>
+                                 <div class="photo"><img src="" alt=""></div>
+                                 <p class="height"></p>
+                                 <p class="weight"></p>
+                                 <p class="age"></p>
+                                 <p class="gender"></p>
+                                 <p class="sport"></p>
+                                 <p class="games"></p>
+                                 <p class="city"></p>
+                                 <p class="medals-summary"></p>
+                                 <p class="medals"></p>
+                                 <ol id="olympian_medals"></ol>
+                                 <p class="events-label"><strong>Eventos:</strong></p>
+                                 <ul id="olympian_events"></ul>
+                             </div>
+                         </div>
+
+                         <!-- List of matches for a specific coordinate -->
+                         <ol id="olympian_list"></ol>
+                     </div>
+                 </div>
+            </div>
+
+            <!-- Geographic Distribution Tab -->
+            <div id="geographic-tab" class="tab-pane">
+                <div id="geographic-dashboard">
+                    <div class="stat-item">Atletas: <span id="geo-dash-count">0</span></div>
+                    <div class="stat-item">Países: <span id="geo-dash-countries">0</span></div>
+                    <div class="stat-item">País Top: <span id="geo-dash-top-country">-</span></div>
+                    <div class="stat-item">Medallas: <span id="geo-dash-medals">0</span></div>
+                </div>
+                
+                <div id="geographic-container">
+                    <div id="world-map"></div>
+                </div>
+            </div>
+        </div>
      </div>
 
-     <!-- Data logic first, then visualization script -->
-     <script src="data.js"></script>
-     <script src="data-generated.js"></script>
-     <script src="js/config.js"></script>
-    <script src="js/state.js"></script>
-    <script src="js/graph.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/filters.js"></script>
-    <script src="js/main.js"></script>
+<!-- Data logic first, then visualization script -->
+      <script src="data.js"></script>
+      <script src="data-generated.js"></script>
+      <script src="https://d3js.org/d3.v7.min.js"></script>
+      <script src="https://unpkg.com/topojson@3"></script>
+      
+      <!-- Geographic mapping files -->
+      <script src="map/noc-to-iso.js"></script>
+      <script src="map/iso-to-noc.js"></script>
+      <script src="map/world-topology-data.js"></script>
+      
+      <!-- Application modules -->
+      <script src="js/config.js"></script>
+      <script src="js/state.js"></script>
+      <script src="js/graph.js"></script>
+      <script src="js/ui.js"></script>
+      <script src="js/filters.js"></script>
+      <script src="js/geographic.js"></script>
+      <script src="js/main.js"></script>
  </body>
  </html>

@@ -148,7 +148,7 @@ App.Filters = (function() {
         applyFilters();
     }
 
-    function applyFilters() {
+function applyFilters() {
         App.State.currentFilteredIndices = [];
         App.State.hiddenIndices = [];
         
@@ -172,6 +172,11 @@ App.Filters = (function() {
         App.Graph.render(App.State.currentFilteredIndices);
         App.UI.updateDashboard(App.State.currentFilteredIndices);
         App.UI.updateHiddenCount(App.State.hiddenIndices.length);
+        
+        // Update geographic visualization if it's initialized
+        if (typeof App.Geographic !== 'undefined' && App.Geographic && App.Geographic.initialized) {
+            App.Geographic.updateMap(App.State.currentFilteredIndices);
+        }
         
         App.UI.clearList();
         App.UI.hideDetail();

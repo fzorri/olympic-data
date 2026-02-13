@@ -36,9 +36,10 @@ App.Graph = (function() {
 
     function drawGrid() {
         var svgNS = "http://www.w3.org/2000/svg";
+        var cfg = App.Config;
         
         // Height Lines (Horizontal)
-        for (var h = 130; h <= 230; h += 10) {
+        for (var h = cfg.MIN_HEIGHT; h <= cfg.MAX_HEIGHT; h += cfg.HEIGHT_STEP) {
             var bottom = (h - MIN_HEIGHT) * SCALE_FACTOR + BASE_BOTTOM;
             var y = SVG_HEIGHT - bottom;
             
@@ -59,7 +60,7 @@ App.Graph = (function() {
         }
         
         // Weight Lines (Vertical)
-        for (var w = 30; w <= 180; w += 10) {
+        for (var w = cfg.MIN_WEIGHT; w <= cfg.MAX_WEIGHT; w += cfg.WEIGHT_STEP) {
             var left = (w - MIN_WEIGHT) * SCALE_FACTOR + BASE_LEFT;
             var x = left;
             
@@ -82,16 +83,12 @@ App.Graph = (function() {
 
     function drawBMIZones() {
         var svgNS = "http://www.w3.org/2000/svg";
-        var bmis = [
-            { val: 18.5, color: "#88cc88", label: "Bajo Peso" },
-            { val: 25,   color: "#8888cc", label: "Normal" },
-            { val: 30,   color: "#cc8888", label: "Sobrepeso" },
-            { val: 40,   color: "#cc4444", label: "Obesidad" }
-        ];
+        var cfg = App.Config;
+        var bmis = cfg.BMI_ZONES;
 
         bmis.forEach(bmi => {
             var pathData = [];
-            for (var h = 130; h <= 230; h += 2) {
+            for (var h = cfg.MIN_HEIGHT; h <= cfg.MAX_HEIGHT; h += 2) {
                 var w = bmi.val * Math.pow(h / 100, 2);
                 var bottom = (h - MIN_HEIGHT) * SCALE_FACTOR + BASE_BOTTOM;
                 var y = SVG_HEIGHT - bottom;
@@ -112,12 +109,7 @@ App.Graph = (function() {
             }
         });
         
-        var zones = [
-            { text: "Bajo Peso", h: 210, w: 70, color: "#88cc88" },
-            { text: "Normal", h: 210, w: 100, color: "#8888cc" },
-            { text: "Sobrepeso", h: 200, w: 115, color: "#cc8888" },
-            { text: "Obesidad", h: 180, w: 130, color: "#cc4444" }
-        ];
+        var zones = cfg.BMI_LABELS;
         
         zones.forEach(z => {
              var bottom = (z.h - MIN_HEIGHT) * SCALE_FACTOR + BASE_BOTTOM;
@@ -180,9 +172,9 @@ App.Graph = (function() {
             var circle = document.createElementNS(svgNS, 'circle');
             circle.setAttribute('cx', cx);
             circle.setAttribute('cy', cy);
-            circle.setAttribute('r', 4);
+            circle.setAttribute('r', App.Config.DOT.BASE_RADIUS);
             
-            var densityClass = 'o' + (count > 12 ? 12 : count);
+            var densityClass = 'o' + (count > App.Config.DOT.MAX_DENSITY_CLASS ? App.Config.DOT.MAX_DENSITY_CLASS : count);
             var hwClass = 'hw' + h + '_' + w;
             
             circle.dataset.tooltip = h + ' cm, ' + w + ' kg';
@@ -214,7 +206,7 @@ App.Graph = (function() {
                 if(App.State.tooltipTimeout) clearTimeout(App.State.tooltipTimeout);
                 App.State.tooltipTimeout = setTimeout(function(){
                     App.UI.hideTooltip(); // Simplified, might need check if visible
-                }, 5000);
+                }, App.Config.TOOLTIP_TIMEOUT);
                 
                 var classes = this.getAttribute('class').split(' ');
                 var hwClass = classes.find(c => c.startsWith('hw'));
@@ -237,14 +229,14 @@ App.Graph = (function() {
         
         graphSvg.addEventListener('wheel', function(e) {
             e.preventDefault();
-            var zoomIntensity = 0.1;
+            var zoomCfg = App.Config.ZOOM;
             var wheel = e.deltaY < 0 ? 1 : -1;
-            var zoom = Math.exp(wheel * zoomIntensity);
+            var zoom = Math.exp(wheel * zoomCfg.INTENSITY);
             
             var pt = getEventPoint(e);
             
             var newK = App.State.transform.k * zoom;
-            newK = Math.max(0.5, Math.min(newK, 10)); 
+            newK = Math.max(zoomCfg.MIN_SCALE, Math.min(newK, zoomCfg.MAX_SCALE));
             
             App.State.transform.x = pt.x - (pt.x - App.State.transform.x) * (newK / App.State.transform.k);
             App.State.transform.y = pt.y - (pt.y - App.State.transform.y) * (newK / App.State.transform.k);
@@ -292,14 +284,15 @@ App.Graph = (function() {
     }
 
     function updateLabelScale(scale) {
+        var zoomCfg = App.Config.ZOOM;
         var labels = document.querySelectorAll('.grid-label');
-        var fontSize = 10 / scale;
+        var fontSize = zoomCfg.BASE_FONT_SIZE / scale;
         labels.forEach(l => {
             l.setAttribute('font-size', fontSize);
         });
         
         var bmiLabels = document.querySelectorAll('.bmi-label');
-        var bmiSize = 12 / scale;
+        var bmiSize = zoomCfg.BMI_FONT_SIZE / scale;
         bmiLabels.forEach(l => {
             l.setAttribute('font-size', bmiSize);
         });

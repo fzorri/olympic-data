@@ -312,7 +312,7 @@ App.UI = (function() {
             return;
         }
 
-        var range = 10;
+        var range = App.Config.SEARCH.RANGE;
         for (var d = 1; d <= range; d++) {
             for (var dh = -d; dh <= d; dh++) {
                 for (var dw = -d; dw <= d; dw++) {

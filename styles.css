@@ -87,7 +87,7 @@ h1 {
     flex-wrap: wrap;
     gap: 10px;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .filter-row select, .filter-row input {
@@ -308,7 +308,7 @@ h1 {
     overflow: hidden; /* Contain SVG */
     /* Aspect ratio fallback or height control needed? 
        We will let SVG control height mostly, or set min-height */
-    height: 600px;
+    height: 440px;
 }
 
 /* Legends */
@@ -431,7 +431,7 @@ circle.selected {
     background: #f9f9f9;
     border: 1px solid #ddd;
     position: relative;
-    height: 600px;
+    height: 440px;
     overflow-y: auto;
 }
 
@@ -750,6 +750,383 @@ circle.selected {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
  }
  
- .zoom-btn:hover {
-    background: #f5f5f5;
- }
+  .zoom-btn:hover {
+     background: #f5f5f5;
+  }
+
+  /* ============================================================================
+     TABLE TAB STYLES
+     ============================================================================ */
+
+  /* Table Dashboard */
+  #table-dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      background-color: #e3e3e3;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+  }
+
+  #table-dashboard .stat-item {
+      flex: 1;
+      min-width: 150px;
+  }
+
+  /* Export Controls */
+  #table-export {
+      margin-bottom: 15px;
+  }
+
+  .export-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+  }
+
+  .export-label {
+      font-weight: bold;
+      color: #333;
+      margin-right: 5px;
+  }
+
+  .export-btn {
+      padding: 8px 16px;
+      background-color: #4a90d9;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: background-color 0.2s, transform 0.1s;
+  }
+
+  .export-btn:hover {
+      background-color: #357abd;
+      transform: translateY(-1px);
+  }
+
+  .export-btn:active {
+      transform: translateY(0);
+  }
+
+  /* Copy Notification */
+  .copy-notification {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 13px;
+      display: inline-block;
+      animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Table Container */
+  #table-container {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+  }
+
+  .table-stats {
+      padding: 12px 15px;
+      background-color: #f5f5f5;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+      color: #555;
+  }
+
+  .no-data {
+      padding: 40px 20px;
+      text-align: center;
+      color: #777;
+      font-style: italic;
+  }
+
+  /* Table Wrapper for scrolling */
+  .table-wrapper {
+      max-height: 600px;
+      overflow-y: auto;
+      overflow-x: auto;
+  }
+
+  /* Athletes Table */
+  #athletes-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+  }
+
+  #athletes-table thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+  }
+
+  #athletes-table th {
+      background-color: #333;
+      color: white;
+      padding: 12px 10px;
+      text-align: left;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #df780c;
+  }
+
+  #athletes-table th:hover {
+      background-color: #444;
+  }
+
+  #athletes-table td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+  }
+
+  #athletes-table tbody tr:hover {
+      background-color: #fff8e1;
+  }
+
+  #athletes-table tbody tr:nth-child(even) {
+      background-color: #fafafa;
+  }
+
+  #athletes-table tbody tr:nth-child(even):hover {
+      background-color: #fff3cd;
+  }
+
+  /* Athlete Name Column */
+  .athlete-name {
+      font-weight: bold;
+      color: #df780c;
+  }
+
+  /* Medal Columns */
+  .medal {
+      text-align: center;
+      font-weight: bold;
+  }
+
+  .medal.gold {
+      color: #b8860b;
+      background-color: #fff9e6;
+  }
+
+  .medal.silver {
+      color: #666;
+      background-color: #f5f5f5;
+  }
+
+  .medal.bronze {
+      color: #8b4513;
+      background-color: #faf0e6;
+  }
+
+  .medal.total {
+      color: #333;
+      background-color: #e8f4f8;
+  }
+
+  /* Responsive Table */
+  @media (max-width: 1200px) {
+      .table-wrapper {
+          max-height: 500px;
+      }
+      
+      #athletes-table {
+          font-size: 12px;
+      }
+      
+      #athletes-table th,
+      #athletes-table td {
+          padding: 8px 6px;
+      }
+  }
+
+  @media (max-width: 768px) {
+      .export-controls {
+          flex-direction: column;
+          align-items: flex-start;
+      }
+      
+      #table-dashboard {
+          flex-direction: column;
+      }
+      
+      .table-wrapper {
+          max-height: 400px;
+      }
+  }
+
+  /* ============================================================================
+     PAGINATION STYLES
+     ============================================================================ */
+
+  #pagination-container {
+      padding: 15px;
+      background-color: #f5f5f5;
+      border-top: 1px solid #ddd;
+  }
+
+  .pagination-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+  }
+
+  .pagination-btn {
+      padding: 8px 12px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #333;
+      transition: all 0.2s ease;
+      min-width: 36px;
+  }
+
+  .pagination-btn:hover:not(:disabled) {
+      background-color: #e3f2fd;
+      border-color: #4a90d9;
+      color: #4a90d9;
+  }
+
+  .pagination-btn:disabled {
+      background-color: #eee;
+      color: #999;
+      cursor: not-allowed;
+      opacity: 0.6;
+  }
+
+  .pagination-btn.active {
+      background-color: #4a90d9;
+      color: white;
+      border-color: #4a90d9;
+      font-weight: bold;
+  }
+
+  .pagination-pages {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+  }
+
+  .pagination-ellipsis {
+      color: #666;
+      padding: 0 4px;
+      font-weight: bold;
+  }
+
+  /* Page number specific styling */
+  .pagination-btn.page-num {
+      min-width: 32px;
+      padding: 6px 10px;
+  }
+
+  /* Stats text enhancement */
+  #table-stats {
+      font-size: 14px;
+  }
+
+  #table-stats strong {
+      color: #df780c;
+  }
+
+  /* Loading indicator for large datasets */
+  .table-loading {
+      padding: 40px;
+      text-align: center;
+      color: #666;
+  }
+
+  .table-loading::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+      border: 2px solid #ddd;
+      border-top-color: #4a90d9;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+      to { transform: rotate(360deg); }
+  }
+
+  /* ============================================================================
+     SORTABLE TABLE HEADERS
+     ============================================================================ */
+
+  #athletes-table th.sortable {
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      padding-right: 20px;
+      transition: background-color 0.2s;
+  }
+
+  #athletes-table th.sortable:hover {
+      background-color: #444;
+  }
+
+  #athletes-table th.sortable::after {
+      content: '⇅';
+      position: absolute;
+      right: 8px;
+      opacity: 0.3;
+      font-size: 12px;
+  }
+
+  #athletes-table th.sort-asc::after,
+  #athletes-table th.sort-desc::after {
+      opacity: 1;
+  }
+
+  #athletes-table th.sort-asc::after {
+      content: '↑';
+      color: #df780c;
+  }
+
+  #athletes-table th.sort-desc::after {
+      content: '↓';
+      color: #df780c;
+  }
+
+  #athletes-table th.sort-asc,
+  #athletes-table th.sort-desc {
+      background-color: #2a2a2a;
+      color: #df780c;
+  }
+
+  /* Sort info in stats bar */
+  .sort-info {
+      color: #666;
+      font-weight: normal;
+      margin-left: 10px;
+  }
+
+  .sort-info .asc::before {
+      content: '↑ ';
+  }
+
+  .sort-info .desc::before {
+      content: '↓ ';
+  }

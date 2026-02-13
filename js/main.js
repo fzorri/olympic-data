@@ -8,8 +8,9 @@ App.Main = (function() {
         App.Graph.init();
         App.UI.init();
         App.Filters.init();
+        App.Table.init();
         
-        // Initialize geographic module only when needed
+        // Initialize tab switching
         initTabSwitching();
         
         App.Filters.apply(); // Initial data load
@@ -64,15 +65,41 @@ App.Main = (function() {
                 console.log("Updating physical graph");
                 App.Graph.render(App.State.currentFilteredIndices);
             }
+        } else if (tabId === 'table') {
+            // Render table with current filtered data
+            if (typeof App.Table !== 'undefined' && App.Table.render) {
+                console.log("Updating data table");
+                App.Table.render(App.State.currentFilteredIndices);
+                updateTableDashboard();
+            }
         }
         
         currentTab = tabId;
     }
 
+    function updateTableDashboard() {
+        var countEl = document.getElementById('table-dash-count');
+        var medalsEl = document.getElementById('table-dash-medals');
+        
+        if (countEl) {
+            countEl.textContent = App.State.currentFilteredIndices.length;
+        }
+        
+        if (medalsEl) {
+            var totalMedals = 0;
+            App.State.currentFilteredIndices.forEach(function(idx) {
+                var athlete = olympianArray[idx];
+                totalMedals += athlete[4] + athlete[5] + athlete[6]; // gold + silver + bronze
+            });
+            medalsEl.textContent = totalMedals;
+        }
+    }
+
     // Public API
     return {
         init: init,
-        switchTab: switchTab
+        switchTab: switchTab,
+        updateTableDashboard: updateTableDashboard
     };
 
 })();

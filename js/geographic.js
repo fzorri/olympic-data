@@ -49,8 +49,8 @@ App.Geographic = (function() {
                 
             // Create projection and path generator
             projection = d3.geoMercator()
-                .scale(130)
-                .translate([width / 2, height / 1.5]);
+                .scale(App.Config.MAP.SCALE)
+                .translate([width / 2, height / App.Config.MAP.TRANSLATE_Y_RATIO]);
                 
             path = d3.geoPath().projection(projection);
             
@@ -78,13 +78,13 @@ App.Geographic = (function() {
             
             // Add resize listener
             window.addEventListener('resize', handleResize);
-        }, 100);
+        }, App.Config.MAP.INIT_DELAY);
     }
     
     function initZoom() {
         // Create zoom behavior
         zoom = d3.zoom()
-            .scaleExtent([1, 8]) // Min and max zoom levels
+            .scaleExtent([App.Config.MAP.MIN_ZOOM, App.Config.MAP.MAX_ZOOM]) // Min and max zoom levels
             .translateExtent([[0, 0], [width, height]])
             .on('zoom', function(event) {
                 currentTransform = event.transform;
@@ -119,7 +119,7 @@ App.Geographic = (function() {
         if (!svg || !zoom) return;
         
         svg.transition()
-            .duration(750)
+            .duration(App.Config.MAP.RESET_DURATION)
             .call(zoom.transform, d3.zoomIdentity);
     }
     
@@ -141,8 +141,9 @@ App.Geographic = (function() {
             .text("Athletes per Country (logarithmic scale)");
         
         // Create SVG for gradient bar
-        var svgWidth = 220;
-        var svgHeight = 80;
+        var mapCfg = App.Config.MAP;
+        var svgWidth = mapCfg.LEGEND_WIDTH;
+        var svgHeight = mapCfg.LEGEND_HEIGHT;
         
         var svg = legend.append("svg")
             .attr("width", svgWidth)
@@ -166,10 +167,10 @@ App.Geographic = (function() {
             .attr("stop-color", d3.interpolateYlOrRd(1));
         
         // Draw gradient rectangle
-        var barWidth = 180;
-        var barHeight = 20;
-        var barX = 20;
-        var barY = 10;
+        var barWidth = mapCfg.GRADIENT_BAR_WIDTH;
+        var barHeight = mapCfg.GRADIENT_BAR_HEIGHT;
+        var barX = mapCfg.GRADIENT_BAR_X;
+        var barY = mapCfg.GRADIENT_BAR_Y;
         
         svg.append("rect")
             .attr("class", "gradient-bar")
@@ -189,7 +190,7 @@ App.Geographic = (function() {
             .attr("y", noDataY)
             .attr("width", 12)
             .attr("height", 12)
-            .attr("fill", "#f0f0f0")
+            .attr("fill", mapCfg.NO_DATA_COLOR)
             .attr("stroke", "#ccc")
             .attr("stroke-width", 1);
         
@@ -294,16 +295,16 @@ App.Geographic = (function() {
         if (!svg || !zoom) return;
         
         svg.transition()
-            .duration(250)
-            .call(zoom.scaleBy, 1.5);
+            .duration(App.Config.MAP.ZOOM_DURATION)
+            .call(zoom.scaleBy, App.Config.MAP.ZOOM_IN_FACTOR);
     }
     
     function zoomOut() {
         if (!svg || !zoom) return;
         
         svg.transition()
-            .duration(250)
-            .call(zoom.scaleBy, 0.75);
+            .duration(App.Config.MAP.ZOOM_DURATION)
+            .call(zoom.scaleBy, App.Config.MAP.ZOOM_OUT_FACTOR);
     }
     
     function loadWorldMap() {
@@ -375,18 +376,19 @@ App.Geographic = (function() {
                     var color = getColorByCount(count, maxCount);
                     
                     // FORCE set all style properties
+                    var mapCfg = App.Config.MAP;
                     var el = d3.select(this);
                     el.attr("fill", color)
                       .style("fill", color)
                       .style("fill-opacity", "1")
                       .style("opacity", "1")
                       .attr("fill-opacity", "1")
-                      .attr("stroke", "#666666")
-                      .attr("stroke-width", "0.5");
+                      .attr("stroke", mapCfg.STROKE_COLOR)
+                      .attr("stroke-width", mapCfg.STROKE_WIDTH);
                 })
                 .on("mouseover", function(event, d) {
                     // Highlight on hover
-                    d3.select(this).attr("stroke", "#333").attr("stroke-width", 1.5);
+                    d3.select(this).attr("stroke", "#333").attr("stroke-width", App.Config.MAP.HIGHLIGHT_STROKE_WIDTH);
                     
                     // Show tooltip
                     var isoCode = d.id ? d.id.toString() : null;
@@ -399,7 +401,8 @@ App.Geographic = (function() {
                 })
                 .on("mouseout", function(event, d) {
                     // Restore stroke
-                    d3.select(this).attr("stroke", "#666666").attr("stroke-width", 0.5);
+                    var mapCfg = App.Config.MAP;
+                    d3.select(this).attr("stroke", mapCfg.STROKE_COLOR).attr("stroke-width", mapCfg.STROKE_WIDTH);
                     
                     // Hide tooltip
                     hideMapTooltip();
@@ -419,7 +422,7 @@ App.Geographic = (function() {
             svg.insert("rect", ".countries")
                 .attr("width", width)
                 .attr("height", height)
-                .attr("fill", "#e6f7ff") // Light blue for oceans
+                .attr("fill", App.Config.MAP.OCEAN_COLOR) // Light blue for oceans
                 .attr("class", "ocean-background");
                 
         } catch (error) {
@@ -558,8 +561,10 @@ App.Geographic = (function() {
     }
     
     function getColorByCount(count, maxCount) {
+        var mapCfg = App.Config.MAP;
+        
         // No data = light gray
-        if (count === 0) return "#f0f0f0";
+        if (count === 0) return mapCfg.NO_DATA_COLOR;
         
         // Validate inputs
         if (typeof maxCount === 'undefined' || maxCount === null) {
@@ -567,11 +572,11 @@ App.Geographic = (function() {
         }
         
         // Edge case: maxCount is 0 or negative
-        if (maxCount <= 0) return "#f0f0f0";
+        if (maxCount <= 0) return mapCfg.NO_DATA_COLOR;
         
         // Edge case: only 0 or 1 athletes in entire dataset
         if (maxCount <= 1) {
-            return count === 1 ? "#ffffcc" : "#f0f0f0"; // Lightest yellow for single athlete
+            return count === 1 ? "#ffffcc" : mapCfg.NO_DATA_COLOR; // Lightest yellow for single athlete
         }
         
         // Check cache first
@@ -772,11 +777,12 @@ App.Geographic = (function() {
             });
             
             // Also update countries with zero counts
+            var mapCfg = App.Config.MAP;
             Object.keys(countryData).forEach(function(countryCode) {
                 if (!countryCounts[countryCode]) {
                     var countryElement = document.getElementById("country-" + countryCode);
                     if (countryElement) {
-                        d3.select(countryElement).attr("fill", "#f0f0f0");
+                        d3.select(countryElement).attr("fill", mapCfg.NO_DATA_COLOR);
                     }
                 }
             });
@@ -933,15 +939,16 @@ App.Geographic = (function() {
                 var logPosition = Math.log10(count) / Math.log10(maxCount);
                 var percentile = (1 - logPosition) * 100;
                 
-                // Determine magnitude description
+                // Determine magnitude description using config thresholds
+                var mapCfg = App.Config.MAP;
                 var magnitude = "";
-                if (count === 1) {
+                if (count === mapCfg.SINGLE_ATHLETE_MAX) {
                     magnitude = "Only 1 athlete";
-                } else if (count < 10) {
+                } else if (count < mapCfg.FEW_ATHLETES_MAX) {
                     magnitude = "Few athletes (1-9)";
-                } else if (count < 100) {
+                } else if (count < mapCfg.SMALL_TEAM_MAX) {
                     magnitude = "Small team (10-99)";
-                } else if (count < 1000) {
+                } else if (count < mapCfg.MEDIUM_TEAM_MAX) {
                     magnitude = "Medium team (100-999)";
                 } else {
                     magnitude = "Large team (1,000+)";
@@ -953,8 +960,9 @@ App.Geographic = (function() {
                 </div>`;
             }
         } else {
+            var mapCfg = App.Config.MAP;
             content += `<div style="display: flex; align-items: center; gap: 6px; margin: 4px 0;">
-                <div style="width: 12px; height: 12px; background: #f0f0f0; border: 1px solid white;"></div>
+                <div style="width: 12px; height: 12px; background: ${mapCfg.NO_DATA_COLOR}; border: 1px solid white;"></div>
                 <div>No athletes</div>
             </div>`;
         }

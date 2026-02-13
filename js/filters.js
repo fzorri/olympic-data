@@ -178,6 +178,15 @@ function applyFilters() {
             App.Geographic.updateMap(App.State.currentFilteredIndices);
         }
         
+        // Update table if we're on the table tab
+        var tableTab = document.getElementById('table-tab');
+        if (tableTab && tableTab.classList.contains('active') && typeof App.Table !== 'undefined' && App.Table.render) {
+            App.Table.render(App.State.currentFilteredIndices);
+            if (App.Main && App.Main.updateTableDashboard) {
+                App.Main.updateTableDashboard();
+            }
+        }
+        
         App.UI.clearList();
         App.UI.hideDetail();
         App.UI.updateStatus("Mostrando " + App.State.currentFilteredIndices.length + " atletas.");
